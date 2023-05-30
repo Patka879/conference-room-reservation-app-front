@@ -1,0 +1,16 @@
+.container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.table {
+    width: 50%;
+}
+
+form {
+    display: flex;
+    flex-direction: column
+}

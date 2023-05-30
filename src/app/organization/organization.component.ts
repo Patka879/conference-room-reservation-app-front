@@ -11,7 +11,7 @@ import { OrganizationService } from '../organization.service';
 export class OrganizationComponent implements OnInit {
   organizations: Organization[] = []
   newOrganization: Organization =  new Organization(0 ,"")
-  displayedColumns: string[] = ['id', 'name'];
+  displayedColumns: string[] = ['id', 'name','delete'];
 
 constructor(private service:OrganizationService) {}
 
@@ -31,4 +31,11 @@ constructor(private service:OrganizationService) {}
   
     });
   }
+
+  deleteOrganization(arg0: number): void {
+    this.service.deleteOrganization(arg0).subscribe(() => {
+      this.loadOrganizations();
+    });
+  }
+
 }

@@ -1,16 +1,21 @@
-.container {
-    height: 100vh;
+.organizations-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-around;
+    height: 70vh;
 }
 
 .table {
-    width: 50%;
+    width: 100%;
 }
 
 form {
     display: flex;
-    flex-direction: column
+    flex-direction: column;
+    width: 500px;
+}
+
+h2 {
+    margin: 0;
 }

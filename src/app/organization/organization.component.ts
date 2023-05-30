@@ -12,11 +12,12 @@ export class OrganizationComponent implements OnInit {
   organizations: Organization[] = []
   newOrganization: Organization =  new Organization(0 ,"")
   displayedColumns: string[] = ['id', 'name','delete'];
+  errorMessage: string = '';
 
 constructor(private service:OrganizationService) {}
 
   ngOnInit(): void {
-    this.loadOrganizations
+    this.loadOrganizations();
   }
 
   loadOrganizations():void {
@@ -25,17 +26,26 @@ constructor(private service:OrganizationService) {}
     })
   }
 
-  createOrganization():void {
-    this.service.addOrganization(this.newOrganization).subscribe(() => {
-      this.loadOrganizations();
-  
-    });
+  createOrganization(): void {
+    this.service.addOrganization(this.newOrganization).subscribe(
+      () => {
+        this.loadOrganizations();
+        this.resetForm();
+      },
+      (error) => {
+        this.errorMessage = error.message; // Set the error message received from the backend
+      }
+    );
   }
 
   deleteOrganization(arg0: number): void {
     this.service.deleteOrganization(arg0).subscribe(() => {
       this.loadOrganizations();
     });
+  }
+
+  resetForm(): void {
+    this.newOrganization = new Organization(0 ,"");
   }
 
 }

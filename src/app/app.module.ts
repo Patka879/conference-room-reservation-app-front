@@ -13,11 +13,15 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatPaginatorModule} from '@angular/material/paginator';
 import {MatIconModule} from '@angular/material/icon';
+import { RoomComponent } from './room/room.component';
+import { ReservationsComponent } from './reservations/reservations.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    OrganizationComponent
+    OrganizationComponent,
+    RoomComponent,
+    ReservationsComponent
   ],
   imports: [
     BrowserModule,

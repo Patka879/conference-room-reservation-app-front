@@ -1,5 +1,5 @@
-<div class="container">
-    <h2>Organizations:</h2>
+<div class="organizations-container">
+    <h2>Organizations:*</h2>
     <div class="table">
         <table mat-table [dataSource]="organizations" class="mat-elevation-z8s mat-table">
             <ng-container matColumnDef="id">
@@ -19,19 +19,33 @@
             <tr class="uppercase-cell" mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr class="uppercase-cell" mat-row *matRowDef="let row; columns: displayedColumns"></tr>
         </table>
+        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
     </div>
+    <h4>*If Your organization is not on the list, please use form below to add it</h4>
     <div class="form">
-        <form (ngSubmit)="createOrganization()">
+        <form (ngSubmit)="createOrganization()" #organizationForm="ngForm">
             <mat-form-field appearance="fill">
-                <mat-label for="name">Name:</mat-label>
-                <input
+              <mat-label for="name">Name:</mat-label>
+              <input
                 matInput
                 type="text"
                 id="name"
                 [(ngModel)]="newOrganization.name"
                 name="name"
                 required
-                />
+                minlength="2"
+                maxlength="20"
+                #nameInput="ngModel"
+              />
+                <mat-error *ngIf="nameInput.invalid && (nameInput.dirty || nameInput.touched)">
+                    <span *ngIf="nameInput.errors?.['required']">Name is required.</span>
+                    <span *ngIf="nameInput.errors?.['minlength']">
+                    Name must be at least 2 characters long.
+                    </span>
+                    <span *ngIf="nameInput.errors?.['maxlength']">
+                    Name cannot exceed 20 characters.
+                    </span>
+                  </mat-error>
             </mat-form-field>
             <button color="accent" mat-raised-button type="submit">Add Organization</button>
         </form>   

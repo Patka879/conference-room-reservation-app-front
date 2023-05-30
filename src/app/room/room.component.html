@@ -1,25 +1,100 @@
-<div class="room-container">
-  <table>
-    <thead>
-      <tr>
-        <th>Room Name</th>
-        <th>Identifier</th>
-        <th>Level</th>
-        <th>Availability</th>
-        <th>Number of Places (Sitting)</th>
-        <th>Number of Places (Standing)</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>namenamename</td>
-        <td>idididid</td>
-        <td>levellevellevel</td>
-        <td>available</td>
-        <td>123</td>
-        <td>12321</td>
-      </tr>
-    </tbody>
-  </table>  
+<div class="rooms-container" [@slideInAnimation]>
+  <h2>Rooms:</h2>
+  <div class="table">
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8s mat-table">
+          <ng-container matColumnDef="id">
+              <th mat-header-cell *matHeaderCellDef> Id </th>
+              <td mat-cell *matCellDef="let room">{{ room.id }}</td>
+          </ng-container>
+          <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef> Name </th>
+              <td mat-cell *matCellDef="let room">{{ room.name }}</td>
+          </ng-container>
+          <ng-container matColumnDef="identifier">
+            <th mat-header-cell *matHeaderCellDef> Identifier (room number) </th>
+            <td mat-cell *matCellDef="let room">{{ room.identifier }}</td>
+          </ng-container>
+          <ng-container matColumnDef="level">
+            <th mat-header-cell *matHeaderCellDef> Level </th>
+            <td mat-cell *matCellDef="let room">{{ room.level }}</td>
+          </ng-container>
+          <ng-container matColumnDef="availability">
+            <th mat-header-cell *matHeaderCellDef> Availability </th>
+            <td mat-cell *matCellDef="let room">{{ room.availability }}</td>
+          </ng-container>
+          <ng-container matColumnDef="numberOfPlaces">
+            <th mat-header-cell *matHeaderCellDef> Seats </th>
+            <td mat-cell *matCellDef="let room">{{ room.numberOfPlaces }}</td>
+          </ng-container>
+          
+          <tr class="uppercase-cell" mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr class="uppercase-cell" mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+      <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [length]="rooms.length" aria-label="Select page of users"></mat-paginator>
+  </div>
+  <div class="form">
+      <form (ngSubmit)="createRoom()" #roomForm="ngForm">
+          <mat-form-field appearance="fill">
+            <mat-label for="name">Room name:</mat-label>
+            <input
+              matInput
+              type="text"
+              id="name"
+              [(ngModel)]="newRoom.name"
+              name="name"
+              required
+              minlength="2"
+              maxlength="20"
+              #nameInput="ngModel"
+            />
+              <mat-error *ngIf="nameInput.invalid && (nameInput.dirty || nameInput.touched)">
+                  <span *ngIf="nameInput.errors?.['required']">Name is required.</span>
+                  <span *ngIf="nameInput.errors?.['minlength']">
+                  Name must be at least 2 characters long.
+                  </span>
+                  <span *ngIf="nameInput.errors?.['maxlength']">
+                  Name cannot exceed 20 characters.
+                  </span>
+                </mat-error>
+          </mat-form-field>
+          <mat-form-field>
+          <mat-label for="name">Identifier (room number) </mat-label>
+            <input
+              matInput
+              type="text"
+              id="identifier"
+              [(ngModel)]="newRoom.identifier"
+              name="identifier"
+              required
+              #nameInput="ngModel"
+            />
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label for="name">Level </mat-label>
+              <input
+                matInput
+                type="text"
+                id="level"
+                [(ngModel)]="newRoom.level"
+                name="level"
+                required
+                #nameInput="ngModel"
+              />
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label for="name">Number of seats</mat-label>
+                <input
+                  matInput
+                  type="text"
+                  id="numberOfPlaces"
+                  [(ngModel)]="newRoom.numberOfPlaces"
+                  name="numberOfPlaces"
+                  required
+                  #nameInput="ngModel"
+                />
+              </mat-form-field>
+            <mat-checkbox [(ngModel)]="newRoom.availability" name="availability">Check if room is available</mat-checkbox>
+          <button color="accent" mat-raised-button type="submit">Add Room</button>
+      </form>   
+  </div>
 </div>
-

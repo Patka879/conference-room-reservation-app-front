@@ -6,20 +6,15 @@ h1 {
 
 .app-container {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: stretch;
     justify-content: space-around;
-    background-color: grey;
-    height: 100vh;
+    background-color: grey; 
 }
 
 .data-container {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    flex-grow: 1
 }
 
-app-reservations {
-    flex-grow: 10
-}

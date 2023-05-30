@@ -1,11 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Organization } from '../organization';
 import { OrganizationService } from '../organization.service';
-import { trigger, state, style, animate, transition } from '@angular/animations';
-import {MatTableDataSource, MatTableModule} from '@angular/material/table';
-import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
-import { MatSort, Sort, MatSortModule } from '@angular/material/sort';
-import {LiveAnnouncer} from '@angular/cdk/a11y';
+import { trigger, style, animate, transition } from '@angular/animations';
+import {MatTableDataSource} from '@angular/material/table';
+import {MatPaginator} from '@angular/material/paginator';
+
 
 
 @Component({

@@ -21,7 +21,6 @@
         </table>
         <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [length]="organizations.length" aria-label="Select page of users"></mat-paginator>
     </div>
-    <h4>*If Your organization is not on the list, please use form below to add it</h4>
     <div class="form">
         <form (ngSubmit)="createOrganization()" #organizationForm="ngForm">
             <mat-form-field appearance="fill">

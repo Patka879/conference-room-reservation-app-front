@@ -26,6 +26,19 @@
     height: 400px;
 }
 
+.success-message { 
+    color: green;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+.error-message { 
+    color: red;
+    font-size: 16px;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
 form {
     display: flex;
     flex-direction: column;

@@ -2,8 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Organization } from '../organization';
 import { OrganizationService } from '../organization.service';
 import { trigger, style, animate, transition } from '@angular/animations';
-import {MatTableDataSource} from '@angular/material/table';
-import {MatPaginator} from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-organization',
@@ -21,24 +21,22 @@ import {MatPaginator} from '@angular/material/paginator';
     ])
   ]
 })
-
 export class OrganizationComponent implements OnInit {
- 
-  organizations: Organization[] = []
-  newOrganization: Organization =  new Organization(0 ,"")
+  organizations: Organization[] = [];
+  newOrganization: Organization = new Organization(0, '');
   existingOrganizationName: string = '';
   newOrganizationName: string = '';
-  displayedColumns: string[] = ['id', 'name','delete']
-  errorMessage: string = ''
+  displayedColumns: string[] = ['organizationId', 'organizationName', 'organizationDelete'];
+  errorMessage: string = '';
   successMessage: string = '';
+  updateSuccessMessage: string = '';
+  updateErrorMessage: string = '';
 
   dataSource = new MatTableDataSource<Organization>(this.organizations);
-  
-  @ViewChild(MatPaginator)
-  paginator!: MatPaginator
-  
-  constructor(private service: OrganizationService) { 
-  }
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  constructor(private service: OrganizationService) {}
 
   ngOnInit(): void {
     this.loadOrganizations();
@@ -51,8 +49,7 @@ export class OrganizationComponent implements OnInit {
   loadOrganizations(): void {
     this.service.getOrganizations().subscribe((list: Organization[]) => {
       this.organizations = list;
-      this.dataSource = new MatTableDataSource(this.organizations);
-      this.dataSource.paginator = this.paginator
+      this.dataSource.paginator = this.paginator;
     });
   }
 
@@ -61,65 +58,91 @@ export class OrganizationComponent implements OnInit {
       () => {
         this.loadOrganizations();
         this.resetForm();
-        this.errorMessage = ''; // Clear the error message
-        this.showSuccessMessage('Organization added successfully'); // Display success message
+        this.errorMessage = '';
+        this.showSuccessMessage('Organization added successfully');
       },
       (error) => {
         console.log(error.error);
         this.errorMessage = error.error;
-        this.showErrorMessage('Failed to add organization'); // Display error message
+        this.showErrorMessage('This organization already exists!');
       }
     );
   }
 
-
-  showSuccessMessage(message: string): void {
-    this.successMessage = message;
-    setTimeout(() => {
-      this.successMessage = ''; // Clear the success message after a certain time
-    }, 3000); // Set the duration for which the success message is displayed (in milliseconds)
-  }
-
-  showErrorMessage(message: string): void {
-    this.successMessage = message;
-    setTimeout(() => {
-      this.successMessage = ''; // Clear the success message after a certain time
-    }, 3000); // Set the duration for which the success message is displayed (in milliseconds)
-  }
-
-  deleteOrganization(arg0: number): void {
-    this.service.deleteOrganization(arg0).subscribe(() => {
+  deleteOrganization(id: number): void {
+    this.service.deleteOrganization(id).subscribe(() => {
       this.loadOrganizations();
     });
   }
 
   resetForm(): void {
-    this.newOrganization = new Organization(0 ,"");
+    this.newOrganization = new Organization(0, '');
   }
 
   updateOrganization(): void {
     const organizationToUpdate = this.organizations.find(
       (organization) => organization.name === this.existingOrganizationName
     );
-
+  
     if (organizationToUpdate) {
+      const existingOrganization = this.organizations.find(
+        (organization) =>
+          organization.name === this.newOrganizationName &&
+          organization.id !== organizationToUpdate.id
+      );
+      if (existingOrganization) {
+        this.showUpdateErrorMessage('An organization with the same name already exists');
+        return;
+      }
+  
       organizationToUpdate.name = this.newOrganizationName;
-
+  
       this.service.updateOrganization(organizationToUpdate).subscribe(
         () => {
           this.resetUpdateForm();
           this.loadOrganizations();
-          
+          this.showUpdateSuccessMessage('Organization updated successfully');
         },
         (error) => {
-          this.errorMessage = error.message
+          this.updateErrorMessage = error.message;
         }
       );
     }
   }
+  
 
   resetUpdateForm(): void {
     this.existingOrganizationName = '';
     this.newOrganizationName = '';
+    this.updateSuccessMessage = '';
+    this.updateErrorMessage = '';
+  }
+
+  showSuccessMessage(message: string): void {
+    this.successMessage = message;
+    setTimeout(() => {
+      this.successMessage = '';
+    }, 3000);
+  }
+
+  showErrorMessage(message: string): void {
+    this.errorMessage = message;
+    setTimeout(() => {
+      this.errorMessage = '';
+    }, 3000);
+  }
+
+  showUpdateSuccessMessage(message: string): void {
+    this.updateSuccessMessage = message;
+    setTimeout(() => {
+      this.updateSuccessMessage = '';
+    }, 3000);
+  }
+  
+  showUpdateErrorMessage(message: string): void {
+    this.updateErrorMessage = message;
+    setTimeout(() => {
+      this.updateErrorMessage = '';
+    }, 3000);
   }
 }

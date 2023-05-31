@@ -1,16 +1,16 @@
 <div class="organizations-container" [@slideInAnimation]>
     <h2>ORGANIZATIONS</h2>
     <div class="table">
-        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8s mat-table">
-            <ng-container matColumnDef="id">
+        <table mat-table [dataSource]="dataSource" class="mat-table">
+            <ng-container matColumnDef="organizationId">
                 <th mat-header-cell *matHeaderCellDef> Id </th>
                 <td mat-cell *matCellDef="let organization">{{ organization.id }}</td>
             </ng-container>
-            <ng-container matColumnDef="name">
+            <ng-container matColumnDef="organizationName">
                 <th mat-header-cell *matHeaderCellDef> Name </th>
                 <td mat-cell *matCellDef="let organization">{{ organization.name }}</td>
             </ng-container>
-            <ng-container matColumnDef="delete">
+            <ng-container matColumnDef="organizationDelete">
                 <th mat-header-cell *matHeaderCellDef> Delete </th>
                 <td mat-cell *matCellDef="let organization">
                     <button mat-raised-button color="primary" (click)="deleteOrganization(organization.id)">Delete</button>
@@ -48,30 +48,34 @@
                         </span>
                     </mat-error>
                 </mat-form-field>
-                <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
                 <button color="accent" mat-raised-button type="submit">Add Organization</button>
+                <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+                <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
             </form>
         </div>
         <div class="form">
             <h2>UPDATE EXISTING ORGANIZATION</h2>
             <form (ngSubmit)="updateOrganization()" #updateForm="ngForm">
-                <mat-form-field appearance="fill">
+              <mat-form-field appearance="fill">
                 <mat-label for="existingName">Select Organization:</mat-label>
                 <mat-select matNativeControl id="existingName" [(ngModel)]="existingOrganizationName" name="existingName" required>
-                    <mat-option *ngFor="let organization of organizations" [value]="organization.name">{{ organization.name }}</mat-option>
-                  </mat-select>
-                </mat-form-field>
-                <mat-form-field appearance="fill">
+                  <mat-option *ngFor="let organization of organizations" [value]="organization.name">{{ organization.name }}</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field appearance="fill">
                 <mat-label for="newName">New Name:</mat-label>
                 <input matInput type="text" id="newName" [(ngModel)]="newOrganizationName" name="newName" required minlength="2" maxlength="20" #nameInput="ngModel" />
                 <mat-error *ngIf="nameInput.invalid && (nameInput.dirty || nameInput.touched)">
-                    <span *ngIf="nameInput.errors?.['required']">Name is required.</span>
-                    <span *ngIf="nameInput.errors?.['minlength']">Name must be at least 2 characters long.</span>
-                    <span *ngIf="nameInput.errors?.['maxlength']">Name cannot exceed 20 characters.</span>
+                  <span *ngIf="nameInput.errors?.['required']">Name is required.</span>
+                  <span *ngIf="nameInput.errors?.['minlength']">Name must be at least 2 characters long.</span>
+                  <span *ngIf="nameInput.errors?.['maxlength']">Name cannot exceed 20 characters.</span>
                 </mat-error>
-                </mat-form-field>
-                <button color="accent" mat-raised-button type="submit">Update Organization</button>
+              </mat-form-field>
+              <button color="accent" mat-raised-button type="submit">Update Organization</button>
+              <div class="success-message" *ngIf="updateSuccessMessage">{{ updateSuccessMessage }}</div>
+              <div class="error-message" *ngIf="updateErrorMessage">{{ updateErrorMessage }}</div>
             </form>
-        </div>
+          </div>
+          
     </div>
 </div>

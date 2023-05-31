@@ -1,9 +1,25 @@
 .rooms-container {
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-around;
+    width: 700px;
+}
+
+.forms-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     width: 100%;
+    margin-top: 40px;
+}
+
+.form {
+    width: 350px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .table {
@@ -13,7 +29,7 @@
 form {
     display: flex;
     flex-direction: column;
-    width: 500px;
+    width: 300px;
 }
 
 h2 {
@@ -22,5 +38,4 @@ h2 {
 
 h4 {
     margin-top: 30px;
-    font-size: 20px;
 }

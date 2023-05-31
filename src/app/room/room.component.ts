@@ -24,7 +24,7 @@ import {MatPaginator} from '@angular/material/paginator';
 
 export class RoomComponent implements OnInit{
   rooms: Room[] = []
-  newRoom: Room =  new Room(0 ,"", 0, 0, true, 0 )
+  newRoom: Room =  new Room(0 ,"", 0, 0, false, 0 )
   displayedColumns: string[] = ['id', 'name', 'identifier', 'level', 'availability', 'numberOfPlaces', 'delete'];
   existingRoomId: number | undefined;
   newRoomName: string = '';

@@ -14,8 +14,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatPaginatorModule} from '@angular/material/paginator';
 import {MatIconModule} from '@angular/material/icon';
 import { RoomComponent } from './room/room.component';
-import { ReservationsComponent } from './reservations/reservations.component';
+import { ReservationComponent } from './reservation/reservation.component';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import { MatSelectModule } from '@angular/material/select';
 
 
 @NgModule({
@@ -23,7 +24,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     AppComponent,
     OrganizationComponent,
     RoomComponent,
-    ReservationsComponent
+    ReservationComponent
   ],
   imports: [
     BrowserModule,
@@ -38,7 +39,8 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     BrowserAnimationsModule,
     MatPaginatorModule,
     MatIconModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatSelectModule
   ],
   providers: [],
   bootstrap: [AppComponent]

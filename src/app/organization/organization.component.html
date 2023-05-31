@@ -1,5 +1,5 @@
 <div class="organizations-container" [@slideInAnimation]>
-    <h2>Organizations:*</h2>
+    <h2>ORGANIZATIONS</h2>
     <div class="table">
         <table mat-table [dataSource]="dataSource" class="mat-elevation-z8s mat-table">
             <ng-container matColumnDef="id">
@@ -21,54 +21,57 @@
         </table>
         <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [length]="organizations.length" aria-label="Select page of users"></mat-paginator>
     </div>
-    <h2>Please add Your Room if it's not on the list</h2>
-    <div class="form">
-        <form (ngSubmit)="createOrganization()" #organizationForm="ngForm">
-            <mat-form-field appearance="fill">
-              <mat-label for="name">Name:</mat-label>
-              <input
-                matInput
-                type="text"
-                id="name"
-                [(ngModel)]="newOrganization.name"
-                name="name"
-                required
-                minlength="2"
-                maxlength="20"
-                #nameInput="ngModel"
-              />
+    <div class="forms-container">
+        <div class="form">
+            <h2>ADD NEW ORGANIZATION</h2>
+            <form (ngSubmit)="createOrganization()" #organizationForm="ngForm">
+                <mat-form-field appearance="fill">
+                <mat-label for="name">Name:</mat-label>
+                <input
+                    matInput
+                    type="text"
+                    id="name"
+                    [(ngModel)]="newOrganization.name"
+                    name="name"
+                    required
+                    minlength="2"
+                    maxlength="20"
+                    #nameInput="ngModel"
+                />
+                    <mat-error *ngIf="nameInput.invalid && (nameInput.dirty || nameInput.touched)">
+                        <span *ngIf="nameInput.errors?.['required']">Name is required.</span>
+                        <span *ngIf="nameInput.errors?.['minlength']">
+                        Name must be at least 2 characters long.
+                        </span>
+                        <span *ngIf="nameInput.errors?.['maxlength']">
+                        Name cannot exceed 20 characters.
+                        </span>
+                    </mat-error>
+                </mat-form-field>
+                <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+                <button color="accent" mat-raised-button type="submit">Add Organization</button>
+            </form>
+        </div>
+        <div class="form">
+            <h2>UPDATE EXISTING ORGANIZATION</h2>
+            <form (ngSubmit)="updateOrganization()" #updateForm="ngForm">
+                <mat-form-field appearance="fill">
+                <mat-label for="existingName">Select Organization:</mat-label>
+                <mat-select matNativeControl id="existingName" [(ngModel)]="existingOrganizationName" name="existingName" required>
+                    <mat-option *ngFor="let organization of organizations" [value]="organization.name">{{ organization.name }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                <mat-label for="newName">New Name:</mat-label>
+                <input matInput type="text" id="newName" [(ngModel)]="newOrganizationName" name="newName" required minlength="2" maxlength="20" #nameInput="ngModel" />
                 <mat-error *ngIf="nameInput.invalid && (nameInput.dirty || nameInput.touched)">
                     <span *ngIf="nameInput.errors?.['required']">Name is required.</span>
-                    <span *ngIf="nameInput.errors?.['minlength']">
-                    Name must be at least 2 characters long.
-                    </span>
-                    <span *ngIf="nameInput.errors?.['maxlength']">
-                    Name cannot exceed 20 characters.
-                    </span>
-                  </mat-error>
-            </mat-form-field>
-            <button color="accent" mat-raised-button type="submit">Add Organization</button>
-        </form>
-        <h2>Update Organization</h2>
-        <div class="form">
-        <form (ngSubmit)="updateOrganization()" #updateForm="ngForm">
-            <mat-form-field appearance="fill">
-            <mat-label for="existingName">Existing Name:</mat-label>
-            <select matNativeControl id="existingName" [(ngModel)]="existingOrganizationName" name="existingName" required>
-                <option *ngFor="let organization of organizations" [value]="organization.name">{{ organization.name }}</option>
-            </select>
-            </mat-form-field>
-            <mat-form-field appearance="fill">
-            <mat-label for="newName">New Name:</mat-label>
-            <input matInput type="text" id="newName" [(ngModel)]="newOrganizationName" name="newName" required minlength="2" maxlength="20" #nameInput="ngModel" />
-            <mat-error *ngIf="nameInput.invalid && (nameInput.dirty || nameInput.touched)">
-                <span *ngIf="nameInput.errors?.['required']">Name is required.</span>
-                <span *ngIf="nameInput.errors?.['minlength']">Name must be at least 2 characters long.</span>
-                <span *ngIf="nameInput.errors?.['maxlength']">Name cannot exceed 20 characters.</span>
-            </mat-error>
-            </mat-form-field>
-            <button color="accent" mat-raised-button type="submit">Update Organization</button>
-        </form>
+                    <span *ngIf="nameInput.errors?.['minlength']">Name must be at least 2 characters long.</span>
+                    <span *ngIf="nameInput.errors?.['maxlength']">Name cannot exceed 20 characters.</span>
+                </mat-error>
+                </mat-form-field>
+                <button color="accent" mat-raised-button type="submit">Update Organization</button>
+            </form>
         </div>
     </div>
 </div>

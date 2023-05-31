@@ -1,5 +1,5 @@
 <div class="rooms-container" [@slideInAnimation]>
-  <h2>Rooms:</h2>
+  <h2>ROOMS</h2>
   <div class="table">
       <table mat-table [dataSource]="dataSource" class="mat-elevation-z8s mat-table">
           <ng-container matColumnDef="id">
@@ -38,8 +38,9 @@
       </table>
       <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [length]="rooms.length" aria-label="Select page of users"></mat-paginator>
   </div>
-  <h2>Please add Your Room if it's not on the list</h2>
-  <div class="form">
+  <div class="forms-container">
+    <div class="form">
+      <h2>ADD NEW ROOM</h2>
       <form (ngSubmit)="createRoom()" #roomForm="ngForm">
         <mat-form-field appearance="fill">
           <mat-label for="name">Room name:</mat-label>
@@ -56,7 +57,7 @@
           />
         </mat-form-field>
         <mat-form-field>
-        <mat-label for="name">Identifier (room number) </mat-label>
+          <mat-label for="name">Identifier (room number) </mat-label>
           <input
             matInput
             type="text"
@@ -69,59 +70,60 @@
         </mat-form-field>
         <mat-form-field>
           <mat-label for="name">Level </mat-label>
-            <input
-              matInput
-              type="text"
-              id="level"
-              [(ngModel)]="newRoom.level"
-              name="level"
-              required
-              #nameInput="ngModel"
-            />
-          </mat-form-field>
-          <mat-form-field>
-            <mat-label for="name">Number of seats</mat-label>
-              <input
-                matInput
-                type="text"
-                id="numberOfPlaces"
-                [(ngModel)]="newRoom.numberOfPlaces"
-                name="numberOfPlaces"
-                required
-                #nameInput="ngModel"
-              />
-            </mat-form-field>
-          <mat-checkbox [(ngModel)]="newRoom.availability" name="availability">Check if room is available</mat-checkbox>
+          <input
+            matInput
+            type="text"
+            id="level"
+            [(ngModel)]="newRoom.level"
+            name="level"
+            required
+            #nameInput="ngModel"
+          />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label for="name">Number of seats</mat-label>
+          <input
+            matInput
+            type="text"
+            id="numberOfPlaces"
+            [(ngModel)]="newRoom.numberOfPlaces"
+            name="numberOfPlaces"
+            required
+            #nameInput="ngModel"
+          />
+        </mat-form-field>
+        <mat-checkbox [(ngModel)]="newRoom.availability" name="availability">Check if room is available</mat-checkbox>
         <button color="accent" mat-raised-button type="submit">Add Room</button>
       </form>
     </div>
-    <h2>Update Room</h2>
     <div class="form">
+      <h2>UPDATE EXISTING ROOM</h2>
       <form (ngSubmit)="updateRoom()" #updateForm="ngForm">
-      <mat-form-field appearance="fill">
-      <mat-label for="existingName">Select Room:</mat-label>
-      <select matNativeControl id="existingName" [(ngModel)]="existingRoomId" name="existingName" required>
-        <option *ngFor="let room of rooms" [value]="room.id">{{ room.name }}</option>
-      </select>
-      </mat-form-field>
-      <mat-form-field appearance="fill">
-        <mat-label for="newName">New Name:</mat-label>
-        <input matInput type="text" id="newName" [(ngModel)]="newRoomName" name="newName" minlength="2" maxlength="20" #nameInput />
-      </mat-form-field>
-      <mat-form-field appearance="fill">
-      <mat-label for="newIdentifier">New Identifier:</mat-label>
-      <input matInput type="text" id="newIdentifier" [(ngModel)]="newRoomIdentifier" name="newIdentifier" #identifierInput />
-      </mat-form-field>
-      <mat-form-field appearance="fill">
-        <mat-label for="newLevel">New Level:</mat-label>
-        <input matInput type="number" id="newLevel" [(ngModel)]="newRoomLevel" name="newLevel" #levelInput />
-      </mat-form-field>
-      <mat-form-field appearance="fill">
-        <mat-label for="newNumberOfPlaces">New Number of Seats:</mat-label>
-        <input matInput type="number" id="newNumberOfPlaces" [(ngModel)]="newRoomNumberOfPlaces" name="newNumberOfPlaces" #seatsInput />
-      </mat-form-field>
-      <mat-checkbox [(ngModel)]="newRoomAvailability" name="availability">Check if room is available</mat-checkbox>
-      <button color="accent" mat-raised-button type="submit">Update Room</button>
-    </form>
+        <mat-form-field appearance="fill">
+        <mat-label for="existingName">Select Room:</mat-label>
+        <mat-select matNativeControl id="existingName" [(ngModel)]="existingRoomId" name="existingName" required>
+          <mat-option *ngFor="let room of rooms" [value]="room.id">{{ room.name }}</mat-option>
+        </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label for="newName">New Name:</mat-label>
+          <input matInput type="text" id="newName" [(ngModel)]="newRoomName" name="newName" minlength="2" maxlength="20" #nameInput />
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+        <mat-label for="newIdentifier">New Identifier:</mat-label>
+        <input matInput type="text" id="newIdentifier" [(ngModel)]="newRoomIdentifier" name="newIdentifier" #identifierInput />
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label for="newLevel">New Level:</mat-label>
+          <input matInput type="number" id="newLevel" [(ngModel)]="newRoomLevel" name="newLevel" #levelInput />
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label for="newNumberOfPlaces">New Number of Seats:</mat-label>
+          <input matInput type="number" id="newNumberOfPlaces" [(ngModel)]="newRoomNumberOfPlaces" name="newNumberOfPlaces" #seatsInput />
+        </mat-form-field>
+        <mat-checkbox [(ngModel)]="newRoomAvailability" name="availability">Check if room is available</mat-checkbox>
+        <button color="accent" mat-raised-button type="submit">Update Room</button>
+      </form>
+    </div>
   </div>
 </div>

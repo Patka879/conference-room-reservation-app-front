@@ -30,6 +30,7 @@ export class OrganizationComponent implements OnInit {
   newOrganizationName: string = '';
   displayedColumns: string[] = ['id', 'name','delete']
   errorMessage: string = ''
+  successMessage: string = '';
 
   dataSource = new MatTableDataSource<Organization>(this.organizations);
   
@@ -60,11 +61,30 @@ export class OrganizationComponent implements OnInit {
       () => {
         this.loadOrganizations();
         this.resetForm();
+        this.errorMessage = ''; // Clear the error message
+        this.showSuccessMessage('Organization added successfully'); // Display success message
       },
       (error) => {
-        this.errorMessage = error.message; // Set the error message received from the backend
+        console.log(error.error);
+        this.errorMessage = error.error;
+        this.showErrorMessage('Failed to add organization'); // Display error message
       }
     );
+  }
+
+
+  showSuccessMessage(message: string): void {
+    this.successMessage = message;
+    setTimeout(() => {
+      this.successMessage = ''; // Clear the success message after a certain time
+    }, 3000); // Set the duration for which the success message is displayed (in milliseconds)
+  }
+
+  showErrorMessage(message: string): void {
+    this.successMessage = message;
+    setTimeout(() => {
+      this.successMessage = ''; // Clear the success message after a certain time
+    }, 3000); // Set the duration for which the success message is displayed (in milliseconds)
   }
 
   deleteOrganization(arg0: number): void {

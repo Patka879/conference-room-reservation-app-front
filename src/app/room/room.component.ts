@@ -25,54 +25,54 @@ import {MatPaginator} from '@angular/material/paginator';
 export class RoomComponent implements OnInit{
 
  
-    rooms: Room[] = []
-    newRoom: Room =  new Room(0 ,"", 0, 0, true, 0 )
-    displayedColumns: string[] = ['id', 'name', 'identifier', 'level', 'availability', 'numberOfPlaces'];
-    errorMessage: string = ''
+  rooms: Room[] = []
+  newRoom: Room =  new Room(0 ,"", 0, 0, true, 0 )
+  displayedColumns: string[] = ['id', 'name', 'identifier', 'level', 'availability', 'numberOfPlaces', 'delete'];
+  errorMessage: string = ''
+
+  dataSource = new MatTableDataSource<Room>(this.rooms);
   
-    dataSource = new MatTableDataSource<Room>(this.rooms);
-    
-    @ViewChild(MatPaginator)
-    paginator!: MatPaginator
-    
-    ngAfterViewInit() {
-      this.dataSource.paginator = this.paginator;
-    }
+  @ViewChild(MatPaginator)
+  paginator!: MatPaginator
   
-    constructor(private service: RoomService) { }
-  
-    ngOnInit(): void {
-      this.loadRooms();
-    }
-  
-    loadRooms(): void {
-      this.service.getRooms().subscribe((list: Room[]) => {
-        this.rooms = list;
-        this.dataSource = new MatTableDataSource(this.rooms);
-        this.dataSource.paginator = this.paginator
-      });
-    }
-  
-    createRoom(): void {
-      this.service.addRoom(this.newRoom).subscribe(
-        () => {
-          this.loadRooms();
-          this.resetForm();
-        },
-        (error) => {
-          this.errorMessage = error.message; 
-        }
-      );
-    }
-  
-    deleteRoom(arg0: number): void {
-      this.service.deleteRoom(arg0).subscribe(() => {
-        this.loadRooms();
-      });
-    }
-  
-    resetForm(): void {
-      this.newRoom = new Room(0 ,"", 0, 0, true, 0 );
-    }
-  
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
   }
+
+  constructor(private service: RoomService) { }
+
+  ngOnInit(): void {
+    this.loadRooms();
+  }
+
+  loadRooms(): void {
+    this.service.getRooms().subscribe((list: Room[]) => {
+      this.rooms = list;
+      this.dataSource = new MatTableDataSource(this.rooms);
+      this.dataSource.paginator = this.paginator
+    });
+  }
+
+  createRoom(): void {
+    this.service.addRoom(this.newRoom).subscribe(
+      () => {
+        this.loadRooms();
+        this.resetForm();
+      },
+      (error) => {
+        this.errorMessage = error.message; 
+      }
+    );
+  }
+
+  deleteRoom(arg0: number): void {
+    this.service.deleteRoom(arg0).subscribe(() => {
+      this.loadRooms();
+    });
+  }
+
+  resetForm(): void {
+    this.newRoom = new Room(0 ,"", 0, 0, true, 0 );
+  }
+
+}

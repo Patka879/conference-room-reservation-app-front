@@ -5,8 +5,6 @@ import { trigger, style, animate, transition } from '@angular/animations';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
 
-
-
 @Component({
   selector: 'app-organization',
   templateUrl: './organization.component.html',
@@ -38,14 +36,15 @@ export class OrganizationComponent implements OnInit {
   @ViewChild(MatPaginator)
   paginator!: MatPaginator
   
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
+  constructor(private service: OrganizationService) { 
   }
-
-  constructor(private service: OrganizationService) { }
 
   ngOnInit(): void {
     this.loadOrganizations();
+  }
+
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
   }
 
   loadOrganizations(): void {
@@ -79,23 +78,21 @@ export class OrganizationComponent implements OnInit {
   }
 
   updateOrganization(): void {
-    // Find the organization with the selected existing name
     const organizationToUpdate = this.organizations.find(
       (organization) => organization.name === this.existingOrganizationName
     );
 
     if (organizationToUpdate) {
-      // Update the name of the organization
       organizationToUpdate.name = this.newOrganizationName;
 
-      // Call the update/patch API
       this.service.updateOrganization(organizationToUpdate).subscribe(
         () => {
-          this.loadOrganizations();
           this.resetUpdateForm();
+          this.loadOrganizations();
+          
         },
         (error) => {
-          this.errorMessage = error.message; // Set the error message received from the backend
+          this.errorMessage = error.message
         }
       );
     }

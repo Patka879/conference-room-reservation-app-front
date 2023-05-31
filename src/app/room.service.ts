@@ -7,7 +7,9 @@ import { Room } from './room'
 const httpOptions = {
     headers: new HttpHeaders({
       'Content-Type':  'application/json',
-      'Access-Control-Allow-Origin': '*'
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': '*',
+      'Access-Control-Allow-Headers': '*'
     })
   };
 
@@ -19,6 +21,7 @@ const httpOptions = {
     private getRoomsLink = "http://localhost:8080/room/all"
     private createRoomUrl = "http://localhost:8080/room/new"
     private deleteUrl = "http://localhost:8080/room/delete/"
+    private updateUrl = "http://localhost:8080/room/replace/"
 
     constructor(private http:HttpClient) { }
 
@@ -36,6 +39,10 @@ const httpOptions = {
 
     deleteRoom(arg0: number): Observable<any> {
         return this.http.delete(this.deleteUrl + arg0, httpOptions)
+    }
+
+    updateRoom(room: Room): Observable<any> {
+      return this.http.patch(this.updateUrl + room.id, room, httpOptions);
     }
 
   }

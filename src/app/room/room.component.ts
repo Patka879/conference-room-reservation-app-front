@@ -23,12 +23,16 @@ import {MatPaginator} from '@angular/material/paginator';
 })
 
 export class RoomComponent implements OnInit{
-
- 
   rooms: Room[] = []
   newRoom: Room =  new Room(0 ,"", 0, 0, true, 0 )
   displayedColumns: string[] = ['id', 'name', 'identifier', 'level', 'availability', 'numberOfPlaces', 'delete'];
-  // errorMessage: string = ''
+  existingRoomId: number | undefined;
+  newRoomName: string = '';
+  newRoomIdentifier: number = 0;
+  newRoomLevel: number = 0;
+  newRoomNumberOfPlaces: number = 0;
+  newRoomAvailability: boolean = false;
+ 
 
   dataSource = new MatTableDataSource<Room>(this.rooms);
   
@@ -58,11 +62,8 @@ export class RoomComponent implements OnInit{
       () => {
         this.loadRooms();
         this.resetForm();
-      },
-      // (error) => {
-      //   this.errorMessage = error.message; 
-      // }
-    );
+      }
+    )
   }
 
   deleteRoom(arg0: number): void {
@@ -73,6 +74,45 @@ export class RoomComponent implements OnInit{
 
   resetForm(): void {
     this.newRoom = new Room(0 ,"", 0, 0, true, 0 );
+  }
+
+  updateRoom(): void {
+    const roomIdToFind = Number(this.existingRoomId);
+    
+    const roomToUpdate = this.rooms.find((room) => room.id === roomIdToFind);
+  
+    if (roomToUpdate) {
+      if (this.newRoomName) {
+        roomToUpdate.name = this.newRoomName;
+      }
+      if (this.newRoomIdentifier) {
+        roomToUpdate.identifier = this.newRoomIdentifier;
+      }
+      if (this.newRoomLevel) {
+        roomToUpdate.level = this.newRoomLevel;
+      }
+      if (this.newRoomNumberOfPlaces) {
+        roomToUpdate.numberOfPlaces = this.newRoomNumberOfPlaces;
+      }
+      if (this.newRoomAvailability !== undefined) {
+        roomToUpdate.availability = this.newRoomAvailability;
+      }
+  
+      this.service.updateRoom(roomToUpdate).subscribe(() => {
+        this.loadRooms();
+        this.resetUpdateForm();
+      });
+    }
+  }
+  
+
+  resetUpdateForm(): void {
+    this.existingRoomId = undefined;
+    this.newRoomName = '';
+    this.newRoomIdentifier = 0;
+    this.newRoomLevel = 0;
+    this.newRoomNumberOfPlaces = 0;
+    this.newRoomAvailability = false;
   }
 
 }

@@ -28,6 +28,8 @@ export class OrganizationComponent implements OnInit {
  
   organizations: Organization[] = []
   newOrganization: Organization =  new Organization(0 ,"")
+  existingOrganizationName: string = '';
+  newOrganizationName: string = '';
   displayedColumns: string[] = ['id', 'name','delete']
   errorMessage: string = ''
 
@@ -76,4 +78,31 @@ export class OrganizationComponent implements OnInit {
     this.newOrganization = new Organization(0 ,"");
   }
 
+  updateOrganization(): void {
+    // Find the organization with the selected existing name
+    const organizationToUpdate = this.organizations.find(
+      (organization) => organization.name === this.existingOrganizationName
+    );
+
+    if (organizationToUpdate) {
+      // Update the name of the organization
+      organizationToUpdate.name = this.newOrganizationName;
+
+      // Call the update/patch API
+      this.service.updateOrganization(organizationToUpdate).subscribe(
+        () => {
+          this.loadOrganizations();
+          this.resetUpdateForm();
+        },
+        (error) => {
+          this.errorMessage = error.message; // Set the error message received from the backend
+        }
+      );
+    }
+  }
+
+  resetUpdateForm(): void {
+    this.existingOrganizationName = '';
+    this.newOrganizationName = '';
+  }
 }

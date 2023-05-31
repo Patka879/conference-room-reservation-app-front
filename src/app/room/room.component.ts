@@ -28,7 +28,7 @@ export class RoomComponent implements OnInit{
   rooms: Room[] = []
   newRoom: Room =  new Room(0 ,"", 0, 0, true, 0 )
   displayedColumns: string[] = ['id', 'name', 'identifier', 'level', 'availability', 'numberOfPlaces', 'delete'];
-  errorMessage: string = ''
+  // errorMessage: string = ''
 
   dataSource = new MatTableDataSource<Room>(this.rooms);
   
@@ -59,9 +59,9 @@ export class RoomComponent implements OnInit{
         this.loadRooms();
         this.resetForm();
       },
-      (error) => {
-        this.errorMessage = error.message; 
-      }
+      // (error) => {
+      //   this.errorMessage = error.message; 
+      // }
     );
   }
 

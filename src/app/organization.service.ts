@@ -19,6 +19,7 @@ const httpOptions = {
     private getOrganizationsLink = "http://localhost:8080/organization/all"
     private createOrganizationUrl = "http://localhost:8080/organization/new"
     private deleteUrl = "http://localhost:8080/organization/delete/"
+    private updateUrl = "http://localhost:8080/organization/replace/"
 
     constructor(private http:HttpClient) { }
 
@@ -36,6 +37,10 @@ const httpOptions = {
 
     deleteOrganization(arg0: number): Observable<any> {
         return this.http.delete(this.deleteUrl + arg0, httpOptions)
+    }
+
+    updateOrganization(organization: Organization): Observable<any> {
+      return this.http.patch(this.updateUrl + organization.id, organization, httpOptions);
     }
 
   }

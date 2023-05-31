@@ -54,15 +54,6 @@
               maxlength="20"
               #nameInput="ngModel"
             />
-              <mat-error *ngIf="nameInput.invalid && (nameInput.dirty || nameInput.touched)">
-                  <span *ngIf="nameInput.errors?.['required']">Name is required.</span>
-                  <span *ngIf="nameInput.errors?.['minlength']">
-                  Name must be at least 2 characters long.
-                  </span>
-                  <span *ngIf="nameInput.errors?.['maxlength']">
-                  Name cannot exceed 20 characters.
-                  </span>
-                </mat-error>
           </mat-form-field>
           <mat-form-field>
           <mat-label for="name">Identifier (room number) </mat-label>

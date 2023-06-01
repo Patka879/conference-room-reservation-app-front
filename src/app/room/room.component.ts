@@ -72,37 +72,43 @@ export class RoomComponent implements OnInit{
   }
 
   createRoom(): void {
-    // Check if all fields are filled
-    if (
-      !this.newRoom.name ||
-      !this.newRoom.identifier ||
-      !this.newRoom.level ||
-      !this.newRoom.numberOfSittingPlaces ||
-      !this.newRoom.numberOfStandingPlaces
-    ) {
-      this.showAddErrorMessage('Please fill in all fields');
-      return;
-    }
-  
-    // Check if a room with the same name already exists
-    const existingRoom = this.rooms.find((room) => room.name === this.newRoom.name);
-    if (existingRoom) {
-      this.showAddErrorMessage('A room with the same name already exists');
-      return;
-    }
-  
-    this.service.addRoom(this.newRoom).subscribe(
-      () => {
-        this.loadRooms();
-        this.resetForm();
-        this.showAddSuccessMessage('Room added successfully');
-      },
-      (error) => {
-        console.log(error.error);
-        this.showAddErrorMessage('Error occurred while adding the room');
-      }
-    );
+  // Check if all fields are filled
+  if (
+    !this.newRoom.name ||
+    !this.newRoom.identifier ||
+    !this.newRoom.level ||
+    !this.newRoom.numberOfSittingPlaces ||
+    !this.newRoom.numberOfStandingPlaces
+  ) {
+    this.showAddErrorMessage('Please fill in all fields');
+    return;
   }
+
+  // Check if a room with the same name already exists
+  const existingRoom = this.rooms.find(
+    (room) => room.name.toLowerCase() === this.newRoom.name.toLowerCase()
+  );
+  if (existingRoom) {
+    this.showAddErrorMessage('A room with the same name already exists');
+    return;
+  }
+
+  // Set the lowercase room name before sending to the backend
+  this.newRoom.name = this.newRoom.name.toLowerCase();
+
+  this.service.addRoom(this.newRoom).subscribe(
+    () => {
+      this.loadRooms();
+      this.resetForm();
+      this.showAddSuccessMessage('Room added successfully');
+    },
+    (error) => {
+      console.log(error.error);
+      this.showAddErrorMessage('Error occurred while adding the room');
+    }
+  );
+}
+
   
   updateRoom(): void {
     const roomIdToFind = Number(this.existingRoomId);

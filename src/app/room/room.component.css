@@ -39,6 +39,10 @@
     font-weight: bold;
 }
 
+.mat-table td {
+    text-transform: capitalize;
+}
+
 form {
     display: flex;
     flex-direction: column;

@@ -5,6 +5,7 @@ import { trigger, style, animate, transition } from '@angular/animations';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
 
+
 @Component({
   selector: 'app-room',
   templateUrl: './room.component.html',
@@ -56,8 +57,8 @@ export class RoomComponent implements OnInit{
   loadRooms(): void {
     this.service.getRooms().subscribe((list: Room[]) => {
       this.rooms = list;
-      this.dataSource = new MatTableDataSource(this.rooms);
-      this.dataSource.paginator = this.paginator
+      this.dataSource.data = this.rooms; // Update the data source
+      this.dataSource.paginator = this.paginator;
     });
   }
   
@@ -72,7 +73,6 @@ export class RoomComponent implements OnInit{
   }
 
   createRoom(): void {
-  // Check if all fields are filled
   if (
     !this.newRoom.name ||
     !this.newRoom.identifier ||
@@ -81,10 +81,8 @@ export class RoomComponent implements OnInit{
     !this.newRoom.numberOfStandingPlaces
   ) {
     this.showAddErrorMessage('Please fill in all fields');
-    return;
+    return
   }
-
-  // Check if a room with the same name already exists
   const existingRoom = this.rooms.find(
     (room) => room.name.toLowerCase() === this.newRoom.name.toLowerCase()
   );
@@ -93,7 +91,6 @@ export class RoomComponent implements OnInit{
     return;
   }
 
-  // Set the lowercase room name before sending to the backend
   this.newRoom.name = this.newRoom.name.toLowerCase();
 
   this.service.addRoom(this.newRoom).subscribe(
@@ -144,7 +141,7 @@ export class RoomComponent implements OnInit{
   
       this.service.updateRoom(roomToUpdate).subscribe(() => {
         this.loadRooms();
-        this.resetForm();
+        this.resetUpdateForm()
         this.showUpdateSuccessMessage('Room updated successfully');
       });
     }
@@ -177,6 +174,17 @@ export class RoomComponent implements OnInit{
     setTimeout(() => {
       this.updateErrorMessage = '';
     }, 3000);
+  }
+
+
+  resetUpdateForm(): void {
+    this.existingRoomId = undefined;
+    this.newRoomName = '';
+    this.newRoomIdentifier = '';
+    this.newRoomLevel = 0;
+    this.newRoomNumberOfSittingPlaces = 0;
+    this.newRoomNumberOfStandingPlaces = 0;
+    this.newRoomAvailability = false;
   }
 
 }

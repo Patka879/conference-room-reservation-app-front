@@ -41,10 +41,18 @@
     text-transform: capitalize;
   }
 
+mat-option {
+    text-transform: capitalize;
+}
+
 form {
     display: flex;
     flex-direction: column;
     width: 350px;
+}
+
+input {
+    text-transform: capitalize;
 }
 
 h2 {

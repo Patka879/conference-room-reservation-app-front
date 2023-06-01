@@ -62,49 +62,53 @@
                 <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
             </form>
         </div>
-        <div class="form">
-            <h2>UPDATE EXISTING ORGANIZATION</h2>
-            <form (ngSubmit)="updateOrganization()" #updateForm="ngForm">
-                <mat-form-field appearance="fill">
-                    <mat-label for="organization">Select Organization:</mat-label>
-                    <mat-select matNativeControl id="organization" [(ngModel)]="selectedOrganizationId" name="organization" required>
-                      <mat-option *ngFor="let organization of organizations" [value]="organization.id">{{ organization.name }}</mat-option>
-                    </mat-select>
-                  </mat-form-field>
-              <mat-form-field appearance="fill">
-                <mat-label for="newName">New Name:</mat-label>
-                <input matInput type="text" id="newName" [(ngModel)]="newOrganizationName" name="newName" required minlength="2" maxlength="20" #nameInput="ngModel" />
-                <mat-error *ngIf="nameInput.invalid && (nameInput.dirty || nameInput.touched)">
-                  <span *ngIf="nameInput.errors?.['required']">Name is required.</span>
-                  <span *ngIf="nameInput.errors?.['minlength']">Name must be at least 2 characters long.</span>
-                  <span *ngIf="nameInput.errors?.['maxlength']">Name cannot exceed 20 characters.</span>
-                </mat-error>
-              </mat-form-field>
-              <button color="accent" mat-raised-button type="submit">Update Organization</button>
-              <div class="success-message" *ngIf="updateSuccessMessage">{{ updateSuccessMessage }}</div>
-              <div class="error-message" *ngIf="updateErrorMessage">{{ updateErrorMessage }}</div>
-            </form>
-          </div>
-          <div class="form">
-            <h2>ADD ROOM TO ORGANIZATION</h2>
-            <form (ngSubmit)="addRoomToOrganization()" #roomForm="ngForm">
-              <mat-form-field appearance="fill">
-                <mat-label for="organization">Select Organization:</mat-label>
-                <mat-select matNativeControl id="organization" [(ngModel)]="selectedOrganizationId" name="organization" required>
-                  <mat-option *ngFor="let organization of organizations" [value]="organization.id">{{ organization.name }}</mat-option>
-                </mat-select>
-              </mat-form-field>
-              <mat-form-field appearance="fill">
-                <mat-label for="room">Select Room:</mat-label>
-                <mat-select matNativeControl id="room" [(ngModel)]="selectedRoomId" name="room" required>
-                  <mat-option *ngFor="let room of rooms" [value]="room.id">{{ room.name }}</mat-option>
-                </mat-select>
-              </mat-form-field>
-              <button color="accent" mat-raised-button type="submit">Add Room</button>
-              <div class="success-message" *ngIf="addRoomSuccessMessage">{{ addRoomSuccessMessage }}</div>
-              <div class="error-message" *ngIf="addRoomErrorMessage">{{ addRoomErrorMessage }}</div>
-            </form>
-          </div>
+        <!-- UPDATE EXISTING ORGANIZATION FORM -->
+<div class="form">
+  <h2>UPDATE EXISTING ORGANIZATION</h2>
+  <form (ngSubmit)="updateOrganization()" #updateForm="ngForm">
+      <mat-form-field appearance="fill">
+          <mat-label for="organizationToUpdate">Select Organization:</mat-label>
+          <mat-select matNativeControl id="organizationToUpdate" [(ngModel)]="selectedOrganizationToUpdateId" name="organizationToUpdate" required>
+              <mat-option *ngFor="let organization of organizations" [value]="organization.id">{{ organization.name }}</mat-option>
+          </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+          <mat-label for="newName">New Name:</mat-label>
+          <input matInput type="text" id="newName" [(ngModel)]="newOrganizationName" name="newName" required minlength="2" maxlength="20" #nameInput="ngModel" />
+          <mat-error *ngIf="nameInput.invalid && (nameInput.dirty || nameInput.touched)">
+              <span *ngIf="nameInput.errors?.['required']">Name is required.</span>
+              <span *ngIf="nameInput.errors?.['minlength']">Name must be at least 2 characters long.</span>
+              <span *ngIf="nameInput.errors?.['maxlength']">Name cannot exceed 20 characters.</span>
+          </mat-error>
+      </mat-form-field>
+      <button color="accent" mat-raised-button type="submit">Update Organization</button>
+      <div class="success-message" *ngIf="updateSuccessMessage">{{ updateSuccessMessage }}</div>
+      <div class="error-message" *ngIf="updateErrorMessage">{{ updateErrorMessage }}</div>
+  </form>
+</div>
+
+<!-- ADD ROOM TO ORGANIZATION FORM -->
+<div class="form">
+  <h2>ADD ROOM TO ORGANIZATION</h2>
+  <form (ngSubmit)="addRoomToOrganization()" #roomForm="ngForm">
+    <mat-form-field appearance="fill">
+      <mat-label for="organizationToAddRoom">Select Organization:</mat-label>
+      <mat-select matNativeControl id="organizationToAddRoom" [(ngModel)]="selectedOrganizationToAddRoomId" name="organizationToAddRoom" required>
+        <mat-option *ngFor="let organization of organizations" [value]="organization.id">{{ organization.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label for="roomToAdd">Select Room:</mat-label>
+      <mat-select matNativeControl id="roomToAdd" [(ngModel)]="selectedRoomId" name="roomToAdd" required>
+        <mat-option *ngFor="let room of rooms" [value]="room.id">{{ room.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button color="accent" mat-raised-button type="submit">Add Room to Organization</button>
+    <div class="success-message" *ngIf="addRoomSuccessMessage">{{ addRoomSuccessMessage }}</div>
+    <div class="error-message" *ngIf="addRoomErrorMessage">{{ addRoomErrorMessage }}</div>
+  </form>
+</div>
+
           
     </div>
 </div>

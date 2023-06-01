@@ -1,9 +1,14 @@
-export class Organization {
-    "id": number
-    "name": string
+import {Room} from './room'
 
-    constructor(id: number, name: string) {
-        this.id = id;
-        this.name = name;
+export class Organization {
+    id: number;
+    name: string;
+    rooms: Room[];
+  
+    constructor(id: number, name: string, rooms: Room[] = []) {
+      this.id = id;
+      this.name = name;
+      this.rooms = rooms;
     }
-}
+  }
+  

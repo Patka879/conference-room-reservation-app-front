@@ -5,6 +5,7 @@ import { trigger, style, animate, transition } from '@angular/animations';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 
+
 @Component({
   selector: 'app-organization',
   templateUrl: './organization.component.html',
@@ -23,10 +24,10 @@ import { MatPaginator } from '@angular/material/paginator';
 })
 export class OrganizationComponent implements OnInit {
   organizations: Organization[] = [];
-  newOrganization: Organization = new Organization(0, '');
+  newOrganization: Organization = new Organization(0, '', []);
   existingOrganizationName: string = '';
   newOrganizationName: string = '';
-  displayedColumns: string[] = ['organizationId', 'organizationName', 'organizationDelete'];
+  displayedColumns: string[] = ['organizationId', 'organizationName', 'organizationDelete', 'organizationRoom'];  
   errorMessage: string = '';
   successMessage: string = '';
   updateSuccessMessage: string = '';

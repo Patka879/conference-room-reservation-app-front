@@ -20,6 +20,7 @@ const httpOptions = {
     private createOrganizationUrl = "http://localhost:8080/organization/new"
     private deleteUrl = "http://localhost:8080/organization/delete/"
     private updateUrl = "http://localhost:8080/organization/replace/"
+  
 
     constructor(private http:HttpClient) { }
 
@@ -42,5 +43,11 @@ const httpOptions = {
     updateOrganization(organization: Organization): Observable<any> {
       return this.http.patch(this.updateUrl + organization.id, organization, httpOptions);
     }
+
+    addRoomToOrganization(organizationId: number, roomId: number): Observable<any> {
+      const url = `http://localhost:8080/organization/${organizationId}/add-room/${roomId}`;
+      return this.http.patch(url, httpOptions);
+    }
+    
 
   }

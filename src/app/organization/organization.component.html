@@ -85,6 +85,26 @@
               <div class="error-message" *ngIf="updateErrorMessage">{{ updateErrorMessage }}</div>
             </form>
           </div>
+          <div class="form">
+            <h2>ADD ROOM TO ORGANIZATION</h2>
+            <form (ngSubmit)="addRoomToOrganization()" #roomForm="ngForm">
+              <mat-form-field appearance="fill">
+                <mat-label for="organization">Select Organization:</mat-label>
+                <mat-select matNativeControl id="organization" [(ngModel)]="selectedOrganizationId" name="organization" required>
+                  <mat-option *ngFor="let organization of organizations" [value]="organization.id">{{ organization.name }}</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field appearance="fill">
+                <mat-label for="room">Select Room:</mat-label>
+                <mat-select matNativeControl id="room" [(ngModel)]="selectedRoomId" name="room" required>
+                  <mat-option *ngFor="let room of rooms" [value]="room.id">{{ room.name }}</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <button color="accent" mat-raised-button type="submit">Add Room</button>
+              <div class="success-message" *ngIf="addRoomSuccessMessage">{{ addRoomSuccessMessage }}</div>
+              <div class="error-message" *ngIf="addRoomErrorMessage">{{ addRoomErrorMessage }}</div>
+            </form>
+          </div>
           
     </div>
 </div>

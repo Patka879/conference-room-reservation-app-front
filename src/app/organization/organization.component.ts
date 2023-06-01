@@ -4,6 +4,8 @@ import { OrganizationService } from '../organization.service';
 import { trigger, style, animate, transition } from '@angular/animations';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
+import { RoomService } from '../room.service';
+import { Room } from '../room';
 
 
 @Component({
@@ -27,20 +29,24 @@ export class OrganizationComponent implements OnInit {
   newOrganization: Organization = new Organization(0, '', []);
   existingOrganizationName: string = '';
   newOrganizationName: string = '';
-  displayedColumns: string[] = ['organizationId', 'organizationName', 'organizationDelete', 'organizationRoom'];  
+  displayedColumns: string[] = ['organizationId', 'organizationName', 'organizationRoom', 'organizationDelete'];
   errorMessage: string = '';
   successMessage: string = '';
   updateSuccessMessage: string = '';
   updateErrorMessage: string = '';
-
+  selectedOrganizationId: number = 0
+  selectedRoomId: number = 0
+  rooms: Room[] = [];
+  addRoomSuccessMessage: string = '';
+  addRoomErrorMessage: string = ''
   dataSource = new MatTableDataSource<Organization>(this.organizations);
-
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  constructor(private service: OrganizationService) {}
+  constructor(private organizationService: OrganizationService, private roomService: RoomService) {}
 
   ngOnInit(): void {
     this.loadOrganizations();
+    this.loadRooms();
   }
 
   ngAfterViewInit() {
@@ -48,15 +54,21 @@ export class OrganizationComponent implements OnInit {
   }
 
   loadOrganizations(): void {
-    this.service.getOrganizations().subscribe((list: Organization[]) => {
+    this.organizationService.getOrganizations().subscribe((list: Organization[]) => {
       this.organizations = list;
       this.dataSource = new MatTableDataSource(this.organizations);
       this.dataSource.paginator = this.paginator;
     });
   }
 
+  loadRooms(): void {
+    this.roomService.getRooms().subscribe((rooms: Room[]) => {
+      this.rooms = rooms;
+    });
+  }
+
   createOrganization(): void {
-    this.service.addOrganization(this.newOrganization).subscribe(
+    this.organizationService.addOrganization(this.newOrganization).subscribe(
       () => {
         this.loadOrganizations();
         this.resetForm();
@@ -72,7 +84,7 @@ export class OrganizationComponent implements OnInit {
   }
 
   deleteOrganization(id: number): void {
-    this.service.deleteOrganization(id).subscribe(() => {
+    this.organizationService.deleteOrganization(id).subscribe(() => {
       this.loadOrganizations();
     });
   }
@@ -99,7 +111,7 @@ export class OrganizationComponent implements OnInit {
   
       organizationToUpdate.name = this.newOrganizationName;
   
-      this.service.updateOrganization(organizationToUpdate).subscribe(
+      this.organizationService.updateOrganization(organizationToUpdate).subscribe(
         () => {
           this.resetUpdateForm();
           this.loadOrganizations();
@@ -111,6 +123,19 @@ export class OrganizationComponent implements OnInit {
       );
     }
   }
+
+  addRoomToOrganization(): void {
+    this.organizationService.addRoomToOrganization(this.selectedOrganizationId, this.selectedRoomId).subscribe(
+      () => {
+        this.resetRoomForm();
+        this.loadOrganizations();
+        this.addRoomSuccessMessage = 'Room added to organization successfully';
+      },
+      (error) => {
+        this.addRoomErrorMessage = error.message;
+      }
+    );
+  }
   
 
   resetUpdateForm(): void {
@@ -118,6 +143,13 @@ export class OrganizationComponent implements OnInit {
     this.newOrganizationName = '';
     this.updateSuccessMessage = '';
     this.updateErrorMessage = '';
+  }
+
+  resetRoomForm(): void {
+    this.selectedOrganizationId = 0;
+    this.selectedRoomId = 0;
+    this.addRoomSuccessMessage = '';
+    this.addRoomErrorMessage = '';
   }
 
   showSuccessMessage(message: string): void {

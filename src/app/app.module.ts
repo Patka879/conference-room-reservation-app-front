@@ -17,6 +17,8 @@ import { RoomComponent } from './room/room.component';
 import { ReservationComponent } from './reservation/reservation.component';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { MatSelectModule } from '@angular/material/select';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 
 
@@ -41,7 +43,9 @@ import { MatSelectModule } from '@angular/material/select';
     MatPaginatorModule,
     MatIconModule,
     MatCheckboxModule,
-    MatSelectModule
+    MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

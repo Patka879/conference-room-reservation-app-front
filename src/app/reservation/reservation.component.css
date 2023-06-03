@@ -1,8 +1,8 @@
-.reservation-container {
-    background-color: brown;
+.reservations-container {
     display:flex;
     flex-direction: column;
-    align-items: center;
+    align-items: center; 
+    margin: 50px; 
 }
 
 .mat-table td {
@@ -22,10 +22,25 @@
     font-weight: bold;
 }
 
+form {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+}
+
 mat-option {
     text-transform: capitalize;
 }
 
 mat-select {
     text-transform: capitalize;
+}
+
+h2 {
+    margin: 40px 0;
+}
+
+h4 {
+    margin-top: 30px;
 }

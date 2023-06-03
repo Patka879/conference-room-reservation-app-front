@@ -87,7 +87,6 @@
   </form>
 </div>
 
-<!-- ADD ROOM TO ORGANIZATION FORM -->
 <div class="form">
   <h2>ADD ROOM TO ORGANIZATION</h2>
   <form (ngSubmit)="addRoomToOrganization()" #roomForm="ngForm">
@@ -101,7 +100,7 @@
       <mat-label for="roomToAdd">Select Room:</mat-label>
       <mat-select matNativeControl id="roomToAdd" [(ngModel)]="selectedRoomId" name="roomToAdd" required>
         <mat-option *ngFor="let room of rooms" [value]="room.id">{{ room.name }}</mat-option>
-      </mat-select>
+    </mat-select>
     </mat-form-field>
     <button color="accent" mat-raised-button type="submit">Add Room to Organization</button>
     <div class="success-message" *ngIf="addRoomSuccessMessage">{{ addRoomSuccessMessage }}</div>

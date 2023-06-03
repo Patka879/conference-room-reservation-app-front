@@ -6,9 +6,9 @@ export class Reservation {
   identifier: string;
   organization: Organization;
   room: Room;
-  date: Date;
-  startTime: string;
-  endTime: string;
+  date: Date | undefined;
+  startTime: string | undefined;
+  endTime: string | undefined;
 
   constructor(
     id: number,

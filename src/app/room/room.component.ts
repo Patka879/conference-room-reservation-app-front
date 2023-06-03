@@ -147,7 +147,6 @@ export class RoomComponent implements OnInit{
     }
   }
   
-  
   showAddSuccessMessage(message: string): void {
     this.addSuccessMessage = message;
     setTimeout(() => {
@@ -187,4 +186,7 @@ export class RoomComponent implements OnInit{
     this.newRoomAvailability = false;
   }
 
+  getAvailabilityClass(availability: boolean): string {
+    return availability ? 'available' : 'not-available';
+  }
 }

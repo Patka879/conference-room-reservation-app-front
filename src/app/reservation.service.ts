@@ -17,25 +17,28 @@ const httpOptions = {
 
   export class ReservationService {
     private getReservationsLink = "http://localhost:8080/reservation/all"
-    private createReservationUrl = "http://localhost:8080/reservation/new"
     private deleteReservationUrl = "http://localhost:8080/reservation/delete/"
+    private updateReservationUrl = "http://localhost:8080/reservation/replace/"
 
 
     constructor(private http:HttpClient) { }
 
     getReservations(): Observable<Reservation[]> {
-        return this.http.get<Reservation[]>(this.getReservationsLink, httpOptions)
-    }
+          return this.http.get<Reservation[]>(this.getReservationsLink, httpOptions)
+      }
 
-    addReservation(reservation : Reservation): Observable<any> {
-    return this.http.post (
-        this.createReservationUrl,
-        reservation,
-        httpOptions
-        )
+    addReservation(organizationId: number, roomId: number, reservation: Reservation): Observable<any> {
+        const createReservationUrl = `http://localhost:8080/reservation/new/${organizationId}/${roomId}`;
+        return this.http.post(createReservationUrl, reservation, httpOptions);
     }
 
     deleteReservation(arg0: number): Observable<any> {
       return this.http.delete(this.deleteReservationUrl + arg0, httpOptions)
-  }
+    }
+    
+    updateReservation(reservation: Reservation): Observable<any> {
+      return this.http.patch(this.updateReservationUrl + reservation.id, reservation, httpOptions);
+    }
+
+
 }

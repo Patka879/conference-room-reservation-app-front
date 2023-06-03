@@ -23,25 +23,30 @@ import { Room } from '../room';
     ])
   ]
 })
+
 export class OrganizationComponent implements OnInit {
-  organizations: Organization[] = [];
-  newOrganization: Organization = new Organization(0, '', []);
-  existingOrganizationName: string = '';
-  newOrganizationName: string = '';
-  displayedColumns: string[] = ['organizationId', 'organizationName', 'organizationRoom', 'organizationDelete'];
-  errorMessage: string = '';
-  successMessage: string = '';
-  updateSuccessMessage: string = '';
-  updateErrorMessage: string = '';
+  organizations: Organization[] = []
+  newOrganization: Organization = new Organization(0, '', [])
+  existingOrganizationName: string = ''
+  newOrganizationName: string = ''
+  displayedColumns: string[] = ['organizationId', 'organizationName', 'organizationRoom', 'organizationDelete']
+  errorMessage: string = ''
+  successMessage: string = ''
+  updateSuccessMessage: string = ''
+  updateErrorMessage: string = ''
   selectedOrganizationId: number = 0;
-  selectedOrganizationToUpdateId: number = 0; // Added for the "UPDATE ORGANIZATION" form
-  selectedOrganizationToAddRoomId: number = 0; // Added for the "ADD ROOM TO ORGANIZATION" form
-  selectedRoomId: number = 0;
+  selectedOrganizationToUpdateId: number = 0
+  selectedOrganizationToAddRoomId: number = 0
+  selectedOrganizationToRemoveRoomId: number = 0
+  selectedRoomToRemoveId: number = 0
+  selectedRoomId: number = 0
   rooms: Room[] = [];
-  addRoomSuccessMessage: string = '';
-  addRoomErrorMessage: string = '';
+  addRoomSuccessMessage: string = ''
+  addRoomErrorMessage: string = ''
   dataSource = new MatTableDataSource<Organization>(this.organizations);
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  removeRoomSuccessMessage: string = ''
+  removeRoomErrorMessage: string = ''
+  @ViewChild(MatPaginator) paginator!: MatPaginator
 
   constructor(private organizationService: OrganizationService, private roomService: RoomService) {}
 
@@ -145,6 +150,45 @@ export class OrganizationComponent implements OnInit {
       }
     );
   }
+  
+  removeRoomFromOrganization(): void {
+    const organizationToUpdate = this.organizations.find(
+      (organization) => organization.id === this.selectedOrganizationToRemoveRoomId
+    );
+  
+    if (organizationToUpdate) {
+      const roomToRemoveIndex = organizationToUpdate.rooms.findIndex(
+        (room) => room.id === this.selectedRoomToRemoveId
+      );
+  
+      if (roomToRemoveIndex !== -1) {
+        const roomToRemove = organizationToUpdate.rooms[roomToRemoveIndex];
+        organizationToUpdate.rooms.splice(roomToRemoveIndex, 1);
+  
+        const updatedRoom = { ...roomToRemove, availability: true };
+        this.roomService.updateRoom(updatedRoom).subscribe(
+          () => {
+            this.organizationService.updateOrganization(organizationToUpdate).subscribe(
+              () => {
+                this.resetRoomRemoveForm();
+                this.loadOrganizations();
+                this.loadRooms();
+                this.removeRoomSuccessMessage = 'Room removed from organization successfully';
+              },
+              (error) => {
+                this.removeRoomErrorMessage = error.message;
+              }
+            );
+          },
+          (error) => {
+            this.removeRoomErrorMessage = error.message;
+          }
+        );
+      }
+    }
+  }
+  
+  
 
   deleteOrganization(id: number): void {
     this.organizationService.deleteOrganization(id).subscribe(() => {
@@ -164,10 +208,17 @@ export class OrganizationComponent implements OnInit {
   }
 
   resetRoomForm(): void {
-    this.selectedOrganizationToAddRoomId = 0; // Changed to use selectedOrganizationToAddRoomId
+    this.selectedOrganizationToAddRoomId = 0; 
     this.selectedRoomId = 0;
     this.addRoomSuccessMessage = '';
     this.addRoomErrorMessage = '';
+  }
+
+  resetRoomRemoveForm(): void {
+    this.selectedOrganizationToRemoveRoomId = 0;
+    this.selectedRoomToRemoveId = 0;
+    this.removeRoomSuccessMessage = '';
+    this.removeRoomErrorMessage = '';
   }
 
   showSuccessMessage(message: string): void {

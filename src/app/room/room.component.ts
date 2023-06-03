@@ -13,7 +13,7 @@ import {MatPaginator} from '@angular/material/paginator';
   animations: [
     trigger('slideInAnimation', [
       transition(':enter', [
-        style({ transform: 'translateX(100%)' }),
+        style({ transform: 'translateX(-100%)' }),
         animate('400ms ease-out', style({ transform: 'translateY(0%)' }))
       ]),
       transition(':leave', [
@@ -25,7 +25,7 @@ import {MatPaginator} from '@angular/material/paginator';
 
 export class RoomComponent implements OnInit{
   rooms: Room[] = []
-  newRoom: Room =  new Room(0, "", "", 0, false, 0, 0 )
+  newRoom: Room =  new Room(0, "", "", 0, true, 0, 0 )
   displayedColumns: string[] = ['id', 'name', 'identifier', 'level', 'availability', 'numberOfSittingPlaces', 'numberOfStandingPlaces', 'delete'];
   existingRoomId: number | undefined;
   newRoomName: string = '';
@@ -33,7 +33,7 @@ export class RoomComponent implements OnInit{
   newRoomLevel: number = 0;
   newRoomNumberOfSittingPlaces: number = 0;
   newRoomNumberOfStandingPlaces: number = 0;
-  newRoomAvailability: boolean = false;
+  newRoomAvailability: boolean = true;
   addErrorMessage: string = '';
   updateErrorMessage: string = '';
   addSuccessMessage: string = '';
@@ -183,10 +183,5 @@ export class RoomComponent implements OnInit{
     this.newRoomLevel = 0;
     this.newRoomNumberOfSittingPlaces = 0;
     this.newRoomNumberOfStandingPlaces = 0;
-    this.newRoomAvailability = false;
-  }
-
-  getAvailabilityClass(availability: boolean): string {
-    return availability ? 'available' : 'not-available';
   }
 }

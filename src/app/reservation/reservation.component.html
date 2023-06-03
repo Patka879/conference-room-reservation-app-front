@@ -1,118 +1,126 @@
-<div class="reservations-container">
-  <h2>CREATE NEW RESERVATION</h2>
-  <form (ngSubmit)="addReservation()">
-    <mat-form-field>
-      <mat-label>Identifier</mat-label>
-      <input matInput type="text" [(ngModel)]="newReservation.identifier" name="identifier" required>
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>Organization</mat-label>
-      <mat-select [(ngModel)]="newReservation.organization" name="organization" required>
-        <mat-option *ngFor="let organization of organizations" [value]="organization">{{ organization.name }}</mat-option>
-      </mat-select>
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>Room</mat-label>
-      <mat-select [(ngModel)]="newReservation.room" name="room" required>
-        <mat-option *ngFor="let room of rooms" [value]="room">{{ room.name }}</mat-option>
-      </mat-select>
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>Date</mat-label>
-      <input matInput [matDatepicker]="datePicker" [(ngModel)]="newReservation.date" name="date" required>
-      <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
-      <mat-datepicker #datePicker></mat-datepicker>
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>Start Time</mat-label>
-      <input matInput type="time" [(ngModel)]="newReservation.startTime" name="startTime" required>
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>End Time</mat-label>
-      <input matInput type="time" [(ngModel)]="newReservation.endTime" name="endTime" required>
-    </mat-form-field>
-    <div class="error-message" *ngIf="errorMessage">{{ errorMessage }}</div>
-    <div class="success-message" *ngIf="successMessage">{{ successMessage }}</div>
-    <button color="accent" mat-raised-button type="submit">Create Reservation</button>
-  </form>
-  <h2>RESERVATIONS</h2>
-  <table mat-table [dataSource]="reservations" class="mat-table">
-    <ng-container matColumnDef="identifier">
-      <th mat-header-cell *matHeaderCellDef> Identifier </th>
-      <td mat-cell *matCellDef="let reservation">{{ reservation.identifier }}</td>
-    </ng-container>
-    <ng-container matColumnDef="organization">
-      <th mat-header-cell *matHeaderCellDef> Organization </th>
-      <td mat-cell *matCellDef="let reservation">{{ reservation.organization.name }}</td>
-    </ng-container>
-    <ng-container matColumnDef="room">
-      <th mat-header-cell *matHeaderCellDef> Room </th>
-      <td mat-cell *matCellDef="let reservation">{{ reservation.room.name }}</td>
-    </ng-container>
-    <ng-container matColumnDef="date">
-      <th mat-header-cell *matHeaderCellDef> Date </th>
-      <td mat-cell *matCellDef="let reservation">{{ reservation.date | date }}</td>
-    </ng-container>
-    <ng-container matColumnDef="startTime">
-      <th mat-header-cell *matHeaderCellDef> Start Time </th>
-      <td mat-cell *matCellDef="let reservation">{{ formatTime(reservation.startTime) }}</td>
-    </ng-container>
-    <ng-container matColumnDef="endTime">
-      <th mat-header-cell *matHeaderCellDef> End Time </th>
-      <td mat-cell *matCellDef="let reservation">{{ formatTime(reservation.endTime) }}</td>
-    </ng-container>
-    <ng-container matColumnDef="reservationDelete">
-      <th mat-header-cell *matHeaderCellDef> Delete </th>
-      <td mat-cell *matCellDef="let reservation">
-        <button mat-raised-button color="primary" (click)="deleteReservation(reservation.id)">Delete</button>
-      </td>
-    </ng-container>
-    
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-    
-  </table>
-  <mat-paginator [pageSizeOptions]="[5, 10, 25]" [pageSize]="10" showFirstLastButtons></mat-paginator>
-  <h2>UPDATE EXISTING RESERVATION</h2>
-  <form (ngSubmit)="updateReservation()" #updateForm="ngForm">
-    <mat-form-field appearance="fill">
-      <mat-label for="existingName">Select Reservation:</mat-label>
-      <mat-select matNativeControl id="existingIdentifier" [(ngModel)]="existingReservationId" name="existingIdentifier" required>
-        <mat-option *ngFor="let reservation of reservations" [value]="reservation.id">{{ reservation.identifier }}</mat-option>
-      </mat-select>
-    </mat-form-field>
-    <mat-form-field appearance="fill">
-      <mat-label>Enter New Identifier:</mat-label>
-      <input matInput type="text" [(ngModel)]="newReservationIdentifier" name="newIdentifier" required>
-    </mat-form-field>
-    <mat-form-field appearance="fill">
-      <mat-label>Organization</mat-label>
-      <mat-select [(ngModel)]="selectedOrganization" name="organization" required>
-        <mat-option *ngFor="let organization of organizations" [value]="organization">{{ organization.name }}</mat-option>
-      </mat-select>
-    </mat-form-field>
-    <mat-form-field appearance="fill">
-      <mat-label>Room</mat-label>
-      <mat-select [(ngModel)]="selectedRoom" name="room" required>
-        <mat-option *ngFor="let room of rooms" [value]="room">{{ room.name }}</mat-option>
-      </mat-select>
-    </mat-form-field>
-    <mat-form-field appearance="fill">
-      <mat-label>Date</mat-label>
-      <input matInput [matDatepicker]="datePicker" [(ngModel)]="selectedDate" name="date" required>
-      <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
-      <mat-datepicker #datePicker></mat-datepicker>
-    </mat-form-field>
-    <mat-form-field appearance="fill">
-      <mat-label>Start Time</mat-label>
-      <input matInput type="time" [(ngModel)]="selectedStartTime" name="startTime" required>
-    </mat-form-field>
-    <mat-form-field appearance="fill">
-      <mat-label>End Time</mat-label>
-      <input matInput type="time" [(ngModel)]="selectedEndTime" name="endTime" required>
-    </mat-form-field>
-    <button color="accent" mat-raised-button type="submit">Update Reservation</button>
-    <div class="success-message" *ngIf="updateSuccessMessage">{{ updateSuccessMessage }}</div>
-    <div class="error-message" *ngIf="updateErrorMessage">{{ updateErrorMessage }}</div>
-  </form>
+<div class="reservations-container" [@slideInAnimation]>
+  <h1>RESERVATIONS</h1>
+  <div class="data-container">
+    <div class="table-container">
+      <table mat-table [dataSource]="reservations" class="mat-table">
+        <ng-container matColumnDef="identifier">
+          <th mat-header-cell *matHeaderCellDef> Identifier </th>
+          <td mat-cell *matCellDef="let reservation">{{ reservation.identifier }}</td>
+        </ng-container>
+        <ng-container matColumnDef="organization">
+          <th mat-header-cell *matHeaderCellDef> Organization </th>
+          <td mat-cell *matCellDef="let reservation">{{ reservation.organization.name }}</td>
+        </ng-container>
+        <ng-container matColumnDef="room">
+          <th mat-header-cell *matHeaderCellDef> Room </th>
+          <td mat-cell *matCellDef="let reservation">{{ reservation.room.name }}</td>
+        </ng-container>
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef> Date </th>
+          <td mat-cell *matCellDef="let reservation">{{ reservation.date | date }}</td>
+        </ng-container>
+        <ng-container matColumnDef="startTime">
+          <th mat-header-cell *matHeaderCellDef> Start Time </th>
+          <td mat-cell *matCellDef="let reservation">{{ formatTime(reservation.startTime) }}</td>
+        </ng-container>
+        <ng-container matColumnDef="endTime">
+          <th mat-header-cell *matHeaderCellDef> End Time </th>
+          <td mat-cell *matCellDef="let reservation">{{ formatTime(reservation.endTime) }}</td>
+        </ng-container>
+        <ng-container matColumnDef="reservationDelete">
+          <th mat-header-cell *matHeaderCellDef> Delete </th>
+          <td mat-cell *matCellDef="let reservation">
+            <button mat-raised-button color="primary" (click)="deleteReservation(reservation.id)">Delete</button>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+      <mat-paginator [pageSizeOptions]="[5, 10, 25]" [pageSize]="10" showFirstLastButtons></mat-paginator>
+    </div>
+    <div class="forms-container">
+      <div class="form">
+        <h2>CREATE NEW RESERVATION</h2>
+        <form (ngSubmit)="addReservation()">
+          <mat-form-field>
+            <mat-label>Identifier</mat-label>
+            <input matInput type="text" [(ngModel)]="newReservation.identifier" name="identifier" required>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Organization</mat-label>
+            <mat-select [(ngModel)]="newReservation.organization" name="organization" required>
+              <mat-option *ngFor="let organization of organizations" [value]="organization">{{ organization.name }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Room</mat-label>
+            <mat-select [(ngModel)]="newReservation.room" name="room" required>
+              <mat-option *ngFor="let room of rooms" [value]="room">{{ room.name }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Date</mat-label>
+            <input matInput [matDatepicker]="datePicker1" [(ngModel)]="newReservation.date" name="date" required>
+            <mat-datepicker-toggle matSuffix [for]="datePicker1"></mat-datepicker-toggle>
+            <mat-datepicker #datePicker1></mat-datepicker>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Start Time</mat-label>
+            <input matInput type="time" [(ngModel)]="newReservation.startTime" name="startTime" required>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>End Time</mat-label>
+            <input matInput type="time" [(ngModel)]="newReservation.endTime" name="endTime" required>
+          </mat-form-field>
+          <div class="error-message" *ngIf="errorMessage">{{ errorMessage }}</div>
+          <div class="success-message" *ngIf="successMessage">{{ successMessage }}</div>
+          <button color="accent" mat-raised-button type="submit">Create Reservation</button>
+        </form>
+      </div>
+      <div class="form">
+        <h2>UPDATE EXISTING RESERVATION</h2>
+        <form (ngSubmit)="updateReservation()" #updateForm="ngForm">
+          <mat-form-field appearance="fill">
+            <mat-label for="existingName">Select Reservation:</mat-label>
+            <mat-select matNativeControl id="existingIdentifier" [(ngModel)]="existingReservationId" name="existingIdentifier" required>
+              <mat-option *ngFor="let reservation of reservations" [value]="reservation.id">{{ reservation.identifier }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Enter New Identifier:</mat-label>
+            <input matInput type="text" [(ngModel)]="newReservationIdentifier" name="newIdentifier" required>
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Organization</mat-label>
+            <mat-select [(ngModel)]="selectedOrganization" name="organization" required>
+              <mat-option *ngFor="let organization of organizations" [value]="organization">{{ organization.name }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Room</mat-label>
+            <mat-select [(ngModel)]="selectedRoom" name="room" required>
+              <mat-option *ngFor="let room of rooms" [value]="room">{{ room.name }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Date</mat-label>
+            <input matInput [matDatepicker]="datePicker2" [(ngModel)]="selectedDate" name="date" required>
+            <mat-datepicker-toggle matSuffix [for]="datePicker2"></mat-datepicker-toggle>
+            <mat-datepicker #datePicker2></mat-datepicker>
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Start Time</mat-label>
+            <input matInput type="time" [(ngModel)]="selectedStartTime" name="startTime" required>
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>End Time</mat-label>
+            <input matInput type="time" [(ngModel)]="selectedEndTime" name="endTime" required>
+          </mat-form-field>
+          <button color="accent" mat-raised-button type="submit">Update Reservation</button>
+          <div class="success-message" *ngIf="updateSuccessMessage">{{ updateSuccessMessage }}</div>
+          <div class="error-message" *ngIf="updateErrorMessage">{{ updateErrorMessage }}</div>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>

@@ -1,18 +1,47 @@
+mat-option {
+    text-transform: capitalize;
+}
+
+mat-select {
+    text-transform: capitalize;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    width: 350px;
+}
+
+h2 {
+    margin-top: 0px;
+}
+
+h4 {
+    margin-top: 30px;
+}
+
 .rooms-container {
-    flex-grow: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-around;
-    width: 900px;
+    margin: 50px;
+}
+
+.data-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: start;
+    width: 100%;
+    margin-top: 50px;
 }
 
 .forms-container {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    width: 100%;
-    margin-top: 40px;
+    width:40%;
 }
 
 .form {
@@ -23,7 +52,8 @@
 }
 
 .table {
-    height: 400px;
+    height: 500px;
+    margin: 40px;
 }
 
 .success-message { 
@@ -41,26 +71,4 @@
 
 .mat-table td {
     text-transform: capitalize;
-}
-
-mat-option {
-    text-transform: capitalize;
-}
-
-mat-select {
-    text-transform: capitalize;
-}
-
-form {
-    display: flex;
-    flex-direction: column;
-    width: 300px;
-}
-
-h2 {
-    margin-top: 0px;
-}
-
-h4 {
-    margin-top: 30px;
 }

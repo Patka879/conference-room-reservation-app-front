@@ -1,5 +1,5 @@
 <div class="organizations-container" [@slideInAnimation]>
-    <h2>ORGANIZATIONS</h2>
+    <h1>ORGANIZATIONS</h1>
     <div class="table">
         <table mat-table [dataSource]="dataSource" class="mat-table">
             <ng-container matColumnDef="organizationId">
@@ -107,6 +107,26 @@
     <div class="error-message" *ngIf="addRoomErrorMessage">{{ addRoomErrorMessage }}</div>
   </form>
 </div>
+<div class="form">
+    <h2>REMOVE ROOM FROM ORGANIZATION</h2>
+    <form (ngSubmit)="removeRoomFromOrganization()" #roomForm="ngForm">
+      <mat-form-field appearance="fill">
+        <mat-label for="organizationToRemoveRoom">Select Organization:</mat-label>
+        <mat-select matNativeControl id="organizationToRemoveRoom" [(ngModel)]="selectedOrganizationToRemoveRoomId" name="organizationToRemoveRoom" required>
+            <mat-option *ngFor="let organization of organizations" [value]="organization.id">{{ organization.name }}</mat-option>
+          </mat-select>          
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label for="roomToRemove">Select Room:</mat-label>
+        <mat-select matNativeControl id="roomToRemove" [(ngModel)]="selectedRoomToRemoveId" name="roomToRemove" required>
+            <mat-option *ngFor="let room of rooms" [value]="room.id">{{ room.name }}</mat-option>
+          </mat-select>
+      </mat-form-field>
+      <button color="accent" mat-raised-button type="submit">Remove Room from Organization</button>
+      <div class="success-message" *ngIf="removeRoomSuccessMessage">{{ removeRoomSuccessMessage }}</div>
+      <div class="error-message" *ngIf="removeRoomErrorMessage">{{ removeRoomErrorMessage }}</div>
+    </form>
+  </div>
 
           
     </div>

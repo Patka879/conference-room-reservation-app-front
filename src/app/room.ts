@@ -5,7 +5,7 @@ export class Room {
     "level": number
     "availability": boolean
     "numberOfSittingPlaces": number
-    "numberOfStandingPlaces": number
+    "numberOfStandingPlaces": number    
 
     constructor(id: number, name: string, identifier: string, level: number, availability: boolean, numberOfSittingPlaces: number, numberOfStandingPlaces: number) {
         this.id = id;

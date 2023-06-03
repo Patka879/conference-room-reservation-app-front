@@ -1,7 +1,14 @@
 <div class="app-container">
-    <app-reservation></app-reservation>
-    <div class="data-container">
-    <app-organization></app-organization> 
-    <app-room></app-room>
-    </div>
+    <mat-toolbar color="primary">
+      <mat-toolbar-row>
+        <span>Booker</span>
+        <nav mat-tab-nav-bar>
+          <a class="link" mat-tab-link routerLink="/reservation">Reservations</a>
+          <a mat-tab-link routerLink="/organization">Organizations</a>
+          <a mat-tab-link routerLink="/room">Rooms</a>
+        </nav>
+      </mat-toolbar-row>
+    </mat-toolbar>
+  
+    <router-outlet></router-outlet>
 </div>

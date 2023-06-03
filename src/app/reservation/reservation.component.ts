@@ -156,6 +156,7 @@ export class ReservationComponent implements OnInit {
       this.showAddErrorMessage('Reservation end time should be after start time');
       return;
     }
+    
 
     // Call the addReservation method from the reservation service
     this.reservationService
@@ -306,4 +307,5 @@ export class ReservationComponent implements OnInit {
     };
     this.newReservationIdentifier = '';
   }
+  
 }

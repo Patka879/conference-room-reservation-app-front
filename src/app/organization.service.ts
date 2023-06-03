@@ -21,7 +21,6 @@ const httpOptions = {
     private deleteUrl = "http://localhost:8080/organization/delete/"
     private updateUrl = "http://localhost:8080/organization/replace/"
   
-
     constructor(private http:HttpClient) { }
 
     getOrganizations(): Observable<Organization[]> {
@@ -47,6 +46,11 @@ const httpOptions = {
     addRoomToOrganization(organizationId: number, roomId: number): Observable<any> {
       const url = `http://localhost:8080/organization/${organizationId}/add-room/${roomId}`;
       return this.http.patch(url, httpOptions);
+    }
+
+    removeRoomFromOrganization(organizationId: number, roomId: number): Observable<any> {
+      const url = `http://localhost:8080/organization/${organizationId}/remove-room/${roomId}`;
+      return this.http.post(url, httpOptions);
     }
     
 

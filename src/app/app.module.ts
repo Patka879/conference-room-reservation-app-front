@@ -19,6 +19,8 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 
 
@@ -46,6 +48,9 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatSelectModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatTabsModule,
+    MatToolbarModule
+    
   ],
   providers: [],
   bootstrap: [AppComponent]

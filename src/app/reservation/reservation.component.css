@@ -1,12 +1,59 @@
-.reservations-container {
-    display:flex;
-    flex-direction: column;
-    align-items: center; 
-    margin: 50px; 
+mat-option {
+    text-transform: capitalize;
 }
 
-.mat-table td {
+mat-select {
     text-transform: capitalize;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    width: 350px;
+}
+
+h2 {
+    margin-top: 0px;
+}
+
+h4 {
+    margin-top: 30px;
+}
+
+.reservations-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    margin: 50px;
+}
+
+.data-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: start;
+    width: 100%;
+    margin-top: 50px;
+}
+
+.forms-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width:40%;
+}
+
+.form {
+    width: 350px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.table {
+    height: 500px;
+    margin: 40px;
 }
 
 .success-message { 
@@ -22,25 +69,7 @@
     font-weight: bold;
 }
 
-form {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    width: 100%;
-}
-
-mat-option {
+.mat-table td {
     text-transform: capitalize;
 }
 
-mat-select {
-    text-transform: capitalize;
-}
-
-h2 {
-    margin: 40px 0;
-}
-
-h4 {
-    margin-top: 30px;
-}

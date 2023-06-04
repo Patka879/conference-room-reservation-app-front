@@ -72,3 +72,11 @@ h4 {
 .mat-table td {
     text-transform: capitalize;
 }
+
+.available {
+    background-color: rgb(160, 214, 160);
+  }
+  
+  .not-available {
+    background-color: rgb(226, 118, 118);
+  }

@@ -4,9 +4,10 @@ ENV NODE_ENV production
 WORKDIR /dist/src/app
 # Cache and Install dependencies
 COPY . .
-RUN npm install -g @angular.cli
+RUN npm install -g @angular/cli
+RUN npm install
 # Build the app
-RUN npm run build --prod
+RUN npm run build
 
 
 # Bundle static assets with nginx

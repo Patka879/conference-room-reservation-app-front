@@ -50,8 +50,8 @@ const httpOptions = {
       return this.http.patch(url, httpOptions);
     }
 
-    removeRoomFromOrganization(organizationId: number, roomId: number): Observable<any> {
-      const url = `http://localhost:8080/organization/${organizationId}/remove-room/${roomId}`;
+    removeRoomFromOrganization(organizationId: number, roomName: string): Observable<any> {
+      const url = `http://localhost:8080/organization/${organizationId}/remove-room/${roomName}`;
       return this.http.post(url, httpOptions);
     }
     

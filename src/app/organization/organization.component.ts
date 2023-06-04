@@ -38,7 +38,7 @@ export class OrganizationComponent implements OnInit {
   selectedOrganizationToUpdateId: number = 0
   selectedOrganizationToAddRoomId: number = 0
   selectedOrganizationToRemoveRoomId: number = 0
-  selectedRoomToRemoveId: number = 0
+  selectedRoomToRemoveName: string = ''
   selectedRoomId: number = 0
   rooms: Room[] = [];
   addRoomSuccessMessage: string = ''
@@ -151,46 +151,27 @@ export class OrganizationComponent implements OnInit {
       }
     );
   }
-  
+
   removeRoomFromOrganization(): void {
-    const organizationToUpdate = this.organizations.find(
-      (organization) => organization.id === this.selectedOrganizationToRemoveRoomId
-    );
-  
-    if (organizationToUpdate) {
-      const roomToRemoveIndex = organizationToUpdate.rooms.findIndex(
-        (room) => room.id === this.selectedRoomToRemoveId
-      );
-  
-      if (roomToRemoveIndex !== -1) {
-        const roomToRemove = organizationToUpdate.rooms[roomToRemoveIndex];
-        organizationToUpdate.rooms.splice(roomToRemoveIndex, 1);
-  
-        const updatedRoom = { ...roomToRemove, availability: true };
-        this.roomService.updateRoom(updatedRoom).subscribe(
-          () => {
-            this.organizationService.updateOrganization(organizationToUpdate).subscribe(
-              () => {
-                this.resetRoomRemoveForm();
-                this.loadOrganizations();
-                this.loadRooms();
-                this.removeRoomSuccessMessage = 'Room removed from organization successfully';
-              },
-              (error) => {
-                this.removeRoomErrorMessage = error.message;
-              }
-            );
-          },
-          (error) => {
-            this.removeRoomErrorMessage = error.message;
-          }
-        );
-      }
+    if (this.selectedOrganizationToRemoveRoomId === 0 || this.selectedRoomToRemoveName === '') {
+      this.errorMessage;
+      return;
     }
+
+    this.organizationService.removeRoomFromOrganization(this.selectedOrganizationToRemoveRoomId, this.selectedRoomToRemoveName).subscribe(
+      () => {
+        this.resetRoomRemoveForm();
+        this.loadOrganizations();
+        this.removeRoomSuccessMessage = 'Room removed from organization successfully';
+        this.loadRooms();
+      },
+      (error) => {
+        this.removeRoomErrorMessage = error.message;
+      }
+    );
   }
   
   
-
   deleteOrganization(id: number): void {
     this.organizationService.deleteOrganization(id).subscribe(() => {
       this.loadOrganizations();
@@ -217,7 +198,7 @@ export class OrganizationComponent implements OnInit {
 
   resetRoomRemoveForm(): void {
     this.selectedOrganizationToRemoveRoomId = 0;
-    this.selectedRoomToRemoveId = 0;
+    this.selectedRoomToRemoveName = '';
     this.removeRoomSuccessMessage = '';
     this.removeRoomErrorMessage = '';
   }

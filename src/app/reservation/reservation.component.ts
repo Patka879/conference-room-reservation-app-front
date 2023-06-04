@@ -126,47 +126,6 @@ export class ReservationComponent implements OnInit {
     const twoWeeksFromNow = new Date();
     twoWeeksFromNow.setDate(twoWeeksFromNow.getDate() + 14);
 
-    const reservationDate = new Date(this.newReservation.date);
-
-    if (reservationDate.getDate() == today.getDate()) {
-      this.showAddErrorMessage('Reservations for the current date are not possible.');
-      return;
-    }
-
-    if (reservationDate > twoWeeksFromNow) {
-      this.showAddErrorMessage(
-        'Reservations can only be made up to two weeks in advance.'
-      );
-      return;
-    }
-
-    const startTime = new Date();
-    const startTimeParts = this.newReservation.startTime.split(':');
-    startTime.setHours(Number(startTimeParts[0]), Number(startTimeParts[1]));
-
-    const endTime = new Date();
-    const endTimeParts = this.newReservation.endTime.split(':');
-    endTime.setHours(Number(endTimeParts[0]), Number(endTimeParts[1]));
-
-    const startHour = startTime.getHours();
-    if (startHour < 6 || startHour >= 19) {
-      this.showAddErrorMessage(
-        'Start of the reservation must be between 6 am and 7 pm.'
-      );
-      return;
-    }
-
-    const endHour = endTime.getHours();
-    if (endHour >= 20) {
-      this.showAddErrorMessage('Reservation must end before 8 pm.');
-      return;
-    }
-
-    if (endTime <= startTime) {
-      this.showAddErrorMessage('Reservation end time should be after start time');
-      return;
-    }
-
     this.reservationService
       .addReservation(
         this.newReservation.organization.id,
@@ -180,7 +139,7 @@ export class ReservationComponent implements OnInit {
           this.resetForm();
         },
         (error: any) => {
-          this.showAddErrorMessage('Failed to add reservation.');
+          this.showAddErrorMessage(error.error);
         }
       );
   }
@@ -210,25 +169,51 @@ export class ReservationComponent implements OnInit {
 
   updateReservation(): void {
     const reservationIdToFind = Number(this.existingReservationId);
-
-    const reservationToUpdate = this.reservations.find(
-      (reservation) => reservation.id === reservationIdToFind
-    );
+    const reservationToUpdate = this.reservations.find((reservation) => reservation.id === reservationIdToFind);
   
     if (reservationToUpdate) {
-      const existingReservation = this.reservations.find(
-        (reservation) =>
-          reservation.identifier === this.newReservationIdentifier &&
-          reservation.id !== reservationToUpdate.id
-      );
-      if (existingReservation) {
-        this.showUpdateErrorMessage(
-          'A reservation with the same identifier already exists'
-        );
+      if (this.newReservationIdentifier && (this.newReservationIdentifier.length < 2 || this.newReservationIdentifier.length > 20)) {
+        this.showUpdateErrorMessage('Invalid identifier length. The identifier must have at least 2 characters and at most 20 characters.');
         return;
       }
-      
-      if(this.newReservationIdentifier) {
+  
+      if (this.newReservationDate) {
+        const currentDate = new Date();
+        const today = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
+  
+        if (this.newReservationDate < today) {
+          this.showUpdateErrorMessage('Cannot make a reservation for a past date');
+          return;
+        }
+  
+        const maxAllowedDate = new Date();
+        maxAllowedDate.setDate(maxAllowedDate.getDate() + 14);
+  
+        if (this.newReservationDate > maxAllowedDate) {
+          this.showUpdateErrorMessage('Cannot make a reservation more than two weeks in advance');
+          return;
+        }
+      }
+  
+      if (this.newReservationStartTime && this.newReservationEndTime) {
+        if (this.newReservationEndTime <= this.newReservationStartTime) {
+          this.showUpdateErrorMessage('End time must be after start time');
+          return;
+        }
+      }
+  
+      if (this.newReservationIdentifier) {
+        const existingReservation = this.reservations.find(
+          (reservation) =>
+            reservation.identifier === this.newReservationIdentifier &&
+            reservation.id !== reservationToUpdate.id
+        );
+  
+        if (existingReservation) {
+          this.showUpdateErrorMessage('A reservation with the same identifier already exists');
+          return;
+        }
+  
         reservationToUpdate.identifier = this.newReservationIdentifier;
       }
   
@@ -244,8 +229,7 @@ export class ReservationComponent implements OnInit {
         reservationToUpdate.endTime = this.newReservationEndTime;
       }
   
-      this.reservationService
-        .updateReservation(reservationToUpdate)
+      this.reservationService.updateReservation(reservationToUpdate)
         .subscribe(
           () => {
             this.loadReservations();
@@ -253,11 +237,13 @@ export class ReservationComponent implements OnInit {
             this.showUpdateSuccessMessage('Reservation updated successfully');
           },
           (error: any) => {
-            this.showUpdateErrorMessage('Failed to update reservation');
+            this.showUpdateErrorMessage(error.error);
           }
         );
     }
   }
+  
+  
   
   showAddSuccessMessage(message: string): void {
     this.successMessage = message;

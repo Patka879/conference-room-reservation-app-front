@@ -24,7 +24,9 @@ const httpOptions = {
     constructor(private http:HttpClient) { }
 
     getOrganizations(): Observable<Organization[]> {
-        return this.http.get<Organization[]>(this.getOrganizationsLink, httpOptions)
+        const data = this.http.get<Organization[]>(this.getOrganizationsLink, httpOptions)
+        console.log(data)
+        return data
     }
 
     addOrganization(organization : Organization): Observable<any> {

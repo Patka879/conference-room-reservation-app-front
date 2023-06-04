@@ -25,7 +25,7 @@ h4 {
     flex-direction: column;
     align-items: center;
     justify-content: space-around;
-    margin: 50px;
+    margin: 50px 20px;
 }
 
 .data-container {
@@ -34,7 +34,7 @@ h4 {
     justify-content: space-around;
     align-items: start;
     width: 100%;
-    margin-top: 50px;
+    margin-top: 20px;
 }
 
 .forms-container {

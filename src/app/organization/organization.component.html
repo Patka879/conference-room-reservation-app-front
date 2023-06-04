@@ -13,10 +13,10 @@
             <ng-container matColumnDef="organizationRoom">
                 <th mat-header-cell *matHeaderCellDef> Rooms </th>
                 <td mat-cell *matCellDef="let organization">
-                  <ng-container *ngIf="organization.rooms.length > 0">
-                    <div *ngFor="let room of organization.rooms">{{ room.name }}</div>
+                  <ng-container *ngIf="organization.roomNames.length > 0">
+                    <div *ngFor="let room of organization.roomNames">yello room</div>
                   </ng-container>
-                  <div *ngIf="organization.rooms.length === 0">No rooms</div>
+                  <div *ngIf="organization.roomNames.length === 0">No rooms</div>
                 </td>
             </ng-container>
             <ng-container matColumnDef="organizationDelete">

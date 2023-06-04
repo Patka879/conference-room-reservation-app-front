@@ -1,12 +1,12 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { Organization } from '../organization';
-import { OrganizationService } from '../organization.service';
-import { trigger, style, animate, transition } from '@angular/animations';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
-import { RoomService } from '../room.service';
-import { Reservation } from '../reservation';
-import { ReservationService } from '../reservation.service';
+import { Component, OnInit, ViewChild } from '@angular/core'
+import { Organization } from '../organization'
+import { OrganizationService } from '../organization.service'
+import { trigger, style, animate, transition } from '@angular/animations'
+import { MatTableDataSource } from '@angular/material/table'
+import { MatPaginator } from '@angular/material/paginator'
+import { RoomService } from '../room.service'
+import { Reservation } from '../reservation'
+import { ReservationService } from '../reservation.service'
 import { Room } from '../room';
 
 @Component({
@@ -55,11 +55,12 @@ export class ReservationComponent implements OnInit {
   currentDate: Date = new Date();
   existingReservationId: number | undefined;
   newReservationIdentifier: string = '';
+  newReservationStartTime: string | undefined;
+  newReservationEndTime: string | undefined;
+  newReservationDate: Date | undefined;
   selectedOrganization: Organization | undefined;
   selectedRoom: Room | undefined;
-  selectedDate: Date | undefined;
-  selectedStartTime: string | undefined;
-  selectedEndTime: string | undefined;
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(
@@ -95,7 +96,6 @@ export class ReservationComponent implements OnInit {
   }
 
   addReservation(): void {
-    // Validate if all required fields are filled
     if (
       !this.newReservation.identifier ||
       !this.newReservation.organization.id ||
@@ -120,9 +120,19 @@ export class ReservationComponent implements OnInit {
       return;
     }
 
+    const today = new Date();
+    console.log(today);
+  
     const twoWeeksFromNow = new Date();
-    twoWeeksFromNow.setDate(twoWeeksFromNow.getDate() + 14); // Add 14 days (two weeks)
+    twoWeeksFromNow.setDate(twoWeeksFromNow.getDate() + 14);
+
     const reservationDate = new Date(this.newReservation.date);
+
+    if (reservationDate.getDate() == today.getDate()) {
+      this.showAddErrorMessage('Reservations for the current date are not possible.');
+      return;
+    }
+
     if (reservationDate > twoWeeksFromNow) {
       this.showAddErrorMessage(
         'Reservations can only be made up to two weeks in advance.'
@@ -156,9 +166,7 @@ export class ReservationComponent implements OnInit {
       this.showAddErrorMessage('Reservation end time should be after start time');
       return;
     }
-    
 
-    // Call the addReservation method from the reservation service
     this.reservationService
       .addReservation(
         this.newReservation.organization.id,
@@ -200,9 +208,9 @@ export class ReservationComponent implements OnInit {
     );
   }
 
-  
   updateReservation(): void {
     const reservationIdToFind = Number(this.existingReservationId);
+
     const reservationToUpdate = this.reservations.find(
       (reservation) => reservation.id === reservationIdToFind
     );
@@ -219,47 +227,38 @@ export class ReservationComponent implements OnInit {
         );
         return;
       }
-  
-      reservationToUpdate.identifier = this.newReservationIdentifier;
-  
-      if (this.newReservation.organization?.id) {
-        reservationToUpdate.organization = this.organizations.find(
-          (org) => org.id === this.newReservation.organization.id
-        )!;
+      
+      if(this.newReservationIdentifier) {
+        reservationToUpdate.identifier = this.newReservationIdentifier;
       }
   
-      if (this.newReservation.room?.id) {
-        reservationToUpdate.room = this.rooms.find(
-          (room) => room.id === this.newReservation.room.id
-        )!;
+      if (this.newReservationDate) {
+        reservationToUpdate.date = this.newReservationDate;
       }
   
-      if (this.newReservation.date !== undefined) {
-        reservationToUpdate.date = this.newReservation.date;
+      if (this.newReservationStartTime) {
+        reservationToUpdate.startTime = this.newReservationStartTime;
       }
   
-      if (this.newReservation.startTime) {
-        reservationToUpdate.startTime = this.newReservation.startTime;
+      if (this.newReservationEndTime) {
+        reservationToUpdate.endTime = this.newReservationEndTime;
       }
   
-      if (this.newReservation.endTime) {
-        reservationToUpdate.endTime = this.newReservation.endTime;
-      }
-  
-      this.reservationService.updateReservation(reservationToUpdate).subscribe(
-        () => {
-          this.loadReservations();
-          this.resetUpdateForm();
-          this.showUpdateSuccessMessage('Reservation updated successfully');
-        },
-        (error: any) => {
-          this.showUpdateErrorMessage('Failed to update reservation');
-        }
-      );
+      this.reservationService
+        .updateReservation(reservationToUpdate)
+        .subscribe(
+          () => {
+            this.loadReservations();
+            this.resetUpdateForm();
+            this.showUpdateSuccessMessage('Reservation updated successfully');
+          },
+          (error: any) => {
+            this.showUpdateErrorMessage('Failed to update reservation');
+          }
+        );
     }
   }
   
-        
   showAddSuccessMessage(message: string): void {
     this.successMessage = message;
     setTimeout(() => {
@@ -296,16 +295,10 @@ export class ReservationComponent implements OnInit {
   }
 
   resetUpdateForm(): void {
-    this.newReservation = {
-      id: 0,
-      identifier: '',
-      organization: new Organization(0, ''),
-      room: new Room(0, '', '', 0, false, 0, 0),
-      date: new Date(),
-      startTime: '',
-      endTime: ''
-    };
+    this.existingReservationId = undefined;
     this.newReservationIdentifier = '';
+    this.newReservationDate = undefined;
+    this.newReservationStartTime = undefined;
+    this.newReservationEndTime = undefined;
   }
-  
 }

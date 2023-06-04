@@ -73,53 +73,53 @@ export class RoomComponent implements OnInit{
   }
 
   createRoom(): void {
-  if (
-    !this.newRoom.name ||
-    !this.newRoom.identifier ||
-    !this.newRoom.level ||
-    !this.newRoom.numberOfSittingPlaces ||
-    !this.newRoom.numberOfStandingPlaces
-  ) {
-    this.showAddErrorMessage('Please fill in all fields');
-    return
-  }
-  const existingRoom = this.rooms.find(
-    (room) => room.name.toLowerCase() === this.newRoom.name.toLowerCase()
-  );
-  if (existingRoom) {
-    this.showAddErrorMessage('A room with the same name already exists');
-    return;
-  }
-
-  this.newRoom.name = this.newRoom.name.toLowerCase();
-
-  this.service.addRoom(this.newRoom).subscribe(
-    () => {
-      this.loadRooms();
-      this.resetForm();
-      this.showAddSuccessMessage('Room added successfully');
-    },
-    (error) => {
-      console.log(error.error);
-      this.showAddErrorMessage('Error occurred while adding the room');
+    if (
+      !this.newRoom.name ||
+      !this.newRoom.identifier ||
+      !this.newRoom.level ||
+      !this.newRoom.numberOfSittingPlaces ||
+      !this.newRoom.numberOfStandingPlaces
+    ) {
+      this.showAddErrorMessage('Please fill in all fields');
+      return;
     }
-  );
-}
-
   
+    if (this.newRoom.level < 0 || this.newRoom.level > 10) {
+      this.showAddErrorMessage('Level must be between 0 and 10');
+      return;
+    }
+  
+    this.newRoom.name = this.newRoom.name.toLowerCase();
+  
+    this.service.addRoom(this.newRoom).subscribe(
+      () => {
+        this.loadRooms();
+        this.resetForm();
+        this.showAddSuccessMessage('Room added successfully');
+      },
+      (error) => {
+        this.showAddErrorMessage(error.error);
+      }
+    );
+  }
+  
+  
+
   updateRoom(): void {
     const roomIdToFind = Number(this.existingRoomId);
   
     const roomToUpdate = this.rooms.find((room) => room.id === roomIdToFind);
   
     if (roomToUpdate) {
-  
-      const existingRoom = this.rooms.find((room) => room.name === this.newRoomName && room.id !== roomToUpdate.id);
+
+      const existingRoom = this.rooms.find(
+        (room) => room.name === this.newRoomName && room.id !== roomToUpdate.id
+      );
       if (existingRoom) {
-        this.showUpdateErrorMessage('A room with the same name already exists');
+        this.showUpdateErrorMessage(`A room with the name ${existingRoom.name} already exists`);
         return;
       }
-  
+      
       if (this.newRoomName) {
         roomToUpdate.name = this.newRoomName;
       }
@@ -143,7 +143,11 @@ export class RoomComponent implements OnInit{
         this.loadRooms();
         this.resetUpdateForm()
         this.showUpdateSuccessMessage('Room updated successfully');
-      });
+      },
+      (error) => {
+        this.showUpdateErrorMessage(error.error);
+        }
+      )
     }
   }
   
@@ -174,7 +178,6 @@ export class RoomComponent implements OnInit{
       this.updateErrorMessage = '';
     }, 3000);
   }
-
 
   resetUpdateForm(): void {
     this.existingRoomId = undefined;

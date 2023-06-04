@@ -50,7 +50,7 @@ export class OrganizationComponent implements OnInit {
 
   constructor(private organizationService: OrganizationService, private roomService: RoomService) {}
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.loadOrganizations();
     this.loadRooms();
   }
@@ -61,6 +61,7 @@ export class OrganizationComponent implements OnInit {
 
   loadOrganizations(): void {
     this.organizationService.getOrganizations().subscribe((list: Organization[]) => {
+      console.log("after initializing organisations", list)
       this.organizations = list;
       this.dataSource = new MatTableDataSource(this.organizations);
       this.dataSource.paginator = this.paginator;
@@ -89,24 +90,24 @@ export class OrganizationComponent implements OnInit {
       return;
     }
   
-    this.organizationService.addOrganization(this.newOrganization).subscribe(
-      () => {
+    this.organizationService.addOrganization(this.newOrganization).subscribe({
+      complete: () => {
         this.loadOrganizations();
         this.resetForm();
         this.errorMessage = '';
         this.showSuccessMessage('Organization added successfully');
       },
-      (error) => {
+      error: (error) => {
         console.log(error.error);
         this.errorMessage = error.error;
         this.showErrorMessage('Error adding organization');
       }
-    );
+    });
   }
 
   updateOrganization(): void {
     const organizationToUpdate = this.organizations.find(
-      (organization) => organization.id === this.selectedOrganizationToUpdateId // Changed to use the selectedOrganizationToUpdateId
+      (organization) => organization.id === this.selectedOrganizationToUpdateId
     );
     console.log(organizationToUpdate);
 

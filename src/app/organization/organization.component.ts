@@ -178,7 +178,7 @@ export class OrganizationComponent implements OnInit {
         this.loadRooms();
       },
       (error) => {
-        this.removeRoomErrorMessage = error.message;
+        this.removeRoomErrorMessage = `Room ${this.selectedRoomToRemoveName} is not associated with this organization.`
       }
     );
   }

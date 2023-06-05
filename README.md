@@ -13,5 +13,11 @@
 System created for managing reservations for conference rooms within one building, for multiple organizations.
 This repository contains front-end code of the project. In order to find front-end code, please refer to the back-end repository.
 
+## Technologies
+Project is created with:
+* angular: ~16.0.2
+* docker
+* nginx
+
 
 

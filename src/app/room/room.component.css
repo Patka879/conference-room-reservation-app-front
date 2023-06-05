@@ -74,9 +74,9 @@ h4 {
 }
 
 .available {
-    background-color: rgb(160, 214, 160);
+    background-color: rgb(186, 217, 186);
   }
   
   .not-available {
-    background-color: rgb(226, 118, 118);
+    background-color: rgba(254, 133, 133, 0.836);
   }

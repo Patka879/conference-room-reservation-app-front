@@ -25,6 +25,7 @@ import { Room } from '../room';
     ])
   ]
 })
+
 export class ReservationComponent implements OnInit {
   reservations: Reservation[] = [];
   newReservation: Reservation = {
@@ -62,6 +63,7 @@ export class ReservationComponent implements OnInit {
   selectedRoom: Room | undefined;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  
 
   constructor(
     private reservationService: ReservationService,
@@ -108,10 +110,19 @@ export class ReservationComponent implements OnInit {
       return;
     }
 
+    const today = new Date();
+  
+    const newReservationDate = new Date(this.newReservation.date);
+    newReservationDate.setHours(6, 0);
+    this.newReservation.date = newReservationDate
+
+    console.log('new reservarion start time', this.newReservation.date)
+
     const isIdentifierUsed = this.reservations.some(
       (reservation) =>
         reservation.identifier.toLowerCase() ===
         this.newReservation.identifier.toLowerCase()
+        
     );
     if (isIdentifierUsed) {
       this.showAddErrorMessage(
@@ -119,12 +130,6 @@ export class ReservationComponent implements OnInit {
       );
       return;
     }
-
-    const today = new Date();
-    console.log(today);
-  
-    const twoWeeksFromNow = new Date();
-    twoWeeksFromNow.setDate(twoWeeksFromNow.getDate() + 14);
 
     this.reservationService
       .addReservation(
@@ -145,12 +150,14 @@ export class ReservationComponent implements OnInit {
   }
 
   resetForm(): void {
+    const newDate = new Date();
+    newDate.setHours(6, 0);
     this.newReservation = {
       id: 0,
       identifier: '',
       organization: new Organization(0, ''),
       room: new Room(0, '', '', 0, false, 0, 0),
-      date: new Date(),
+      date: newDate,
       startTime: '',
       endTime: ''
     };
@@ -181,6 +188,10 @@ export class ReservationComponent implements OnInit {
         const currentDate = new Date();
         const today = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
   
+        const newReservationDate = new Date(this.newReservationDate);
+        newReservationDate.setHours(6, 0);
+        this.newReservationDate = newReservationDate;
+  
         if (this.newReservationDate < today) {
           this.showUpdateErrorMessage('Cannot make a reservation for a past date');
           return;
@@ -202,48 +213,26 @@ export class ReservationComponent implements OnInit {
         }
       }
   
-      if (this.newReservationIdentifier) {
-        const existingReservation = this.reservations.find(
-          (reservation) =>
-            reservation.identifier === this.newReservationIdentifier &&
-            reservation.id !== reservationToUpdate.id
-        );
+      const updatedReservation: Reservation = {
+        ...reservationToUpdate,
+        identifier: this.newReservationIdentifier ? this.newReservationIdentifier : reservationToUpdate.identifier,
+        date: this.newReservationDate ? new Date(this.newReservationDate) : reservationToUpdate.date,
+        startTime: this.newReservationStartTime ? this.newReservationStartTime : reservationToUpdate.startTime,
+        endTime: this.newReservationEndTime ? this.newReservationEndTime : reservationToUpdate.endTime,
+      };
   
-        if (existingReservation) {
-          this.showUpdateErrorMessage('A reservation with the same identifier already exists');
-          return;
+      this.reservationService.updateReservation(updatedReservation).subscribe(
+        () => {
+          this.loadReservations();
+          this.resetUpdateForm();
+          this.showUpdateSuccessMessage('Reservation updated successfully');
+        },
+        (error: any) => {
+          this.showUpdateErrorMessage(error.error);
         }
-  
-        reservationToUpdate.identifier = this.newReservationIdentifier;
-      }
-  
-      if (this.newReservationDate) {
-        reservationToUpdate.date = this.newReservationDate;
-      }
-  
-      if (this.newReservationStartTime) {
-        reservationToUpdate.startTime = this.newReservationStartTime;
-      }
-  
-      if (this.newReservationEndTime) {
-        reservationToUpdate.endTime = this.newReservationEndTime;
-      }
-  
-      this.reservationService.updateReservation(reservationToUpdate)
-        .subscribe(
-          () => {
-            this.loadReservations();
-            this.resetUpdateForm();
-            this.showUpdateSuccessMessage('Reservation updated successfully');
-          },
-          (error: any) => {
-            this.showUpdateErrorMessage(error.error);
-          }
-        );
+      );
     }
   }
-  
-  
   
   showAddSuccessMessage(message: string): void {
     this.successMessage = message;

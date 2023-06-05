@@ -107,11 +107,9 @@ export class RoomComponent implements OnInit{
 
   updateRoom(): void {
     const roomIdToFind = Number(this.existingRoomId);
-  
     const roomToUpdate = this.rooms.find((room) => room.id === roomIdToFind);
   
     if (roomToUpdate) {
-
       const existingRoom = this.rooms.find(
         (room) => room.name === this.newRoomName && room.id !== roomToUpdate.id
       );
@@ -119,37 +117,40 @@ export class RoomComponent implements OnInit{
         this.showUpdateErrorMessage(`A room with the name ${existingRoom.name} already exists`);
         return;
       }
-      
-      if (this.newRoomName) {
-        roomToUpdate.name = this.newRoomName;
+  
+      if (this.newRoomNumberOfSittingPlaces && this.newRoomNumberOfSittingPlaces < 0) {
+        this.showUpdateErrorMessage('Invalid number of sitting places. The number must be non-negative.');
+        return;
       }
-      if (this.newRoomIdentifier) {
-        roomToUpdate.identifier = this.newRoomIdentifier;
-      }
-      if (this.newRoomLevel) {
-        roomToUpdate.level = this.newRoomLevel;
-      }
-      if (this.newRoomNumberOfSittingPlaces) {
-        roomToUpdate.numberOfSittingPlaces = this.newRoomNumberOfSittingPlaces;
-      }
-      if (this.newRoomNumberOfStandingPlaces) {
-        roomToUpdate.numberOfStandingPlaces = this.newRoomNumberOfStandingPlaces;
-      }
-      if (this.newRoomAvailability !== undefined) {
-        roomToUpdate.availability = this.newRoomAvailability;
+      if (this.newRoomNumberOfStandingPlaces && this.newRoomNumberOfStandingPlaces < 0) {
+        this.showUpdateErrorMessage('Invalid number of standing places. The number must be non-negative.');
+        return;
       }
   
-      this.service.updateRoom(roomToUpdate).subscribe(() => {
-        this.loadRooms();
-        this.resetUpdateForm()
-        this.showUpdateSuccessMessage('Room updated successfully');
-      },
-      (error) => {
-        this.showUpdateErrorMessage(error.error);
+      const updatedRoom: Room = {
+        ...roomToUpdate,
+        name: this.newRoomName ? this.newRoomName : roomToUpdate.name,
+        identifier: roomToUpdate.identifier, // Keep the existing identifier
+        level: this.newRoomLevel ? this.newRoomLevel : roomToUpdate.level,
+        numberOfSittingPlaces: this.newRoomNumberOfSittingPlaces ? this.newRoomNumberOfSittingPlaces : roomToUpdate.numberOfSittingPlaces,
+        numberOfStandingPlaces: this.newRoomNumberOfStandingPlaces ? this.newRoomNumberOfStandingPlaces : roomToUpdate.numberOfStandingPlaces,
+      };
+  
+      this.service.updateRoom(updatedRoom).subscribe(
+        () => {
+          this.loadRooms();
+          this.resetUpdateForm();
+          this.showUpdateSuccessMessage('Room updated successfully');
+        },
+        (error) => {
+          this.showUpdateErrorMessage(error.error);
         }
-      )
+      );
     }
   }
+  
+
+  
   
   showAddSuccessMessage(message: string): void {
     this.addSuccessMessage = message;

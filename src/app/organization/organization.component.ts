@@ -47,6 +47,7 @@ export class OrganizationComponent implements OnInit {
   removeRoomSuccessMessage: string = ''
   removeRoomErrorMessage: string = ''
   @ViewChild(MatPaginator) paginator!: MatPaginator
+  
 
   constructor(private organizationService: OrganizationService, private roomService: RoomService) {}
 
@@ -110,8 +111,13 @@ export class OrganizationComponent implements OnInit {
       (organization) => organization.id === this.selectedOrganizationToUpdateId
     );
     console.log(organizationToUpdate);
-
+  
     if (organizationToUpdate) {
+      if (this.newOrganizationName.length < 2) {
+        this.showUpdateErrorMessage('The name must have at least 2 characters.');
+        return;
+      }
+  
       const existingOrganization = this.organizations.find(
         (organization) =>
           organization.name === this.newOrganizationName &&
@@ -122,10 +128,15 @@ export class OrganizationComponent implements OnInit {
         this.showUpdateErrorMessage('An organization with the same name already exists');
         return;
       }
-
-      organizationToUpdate.name = this.newOrganizationName;
-
-      this.organizationService.updateOrganization(organizationToUpdate).subscribe(
+  
+      // Update the organization properties
+      let updatedOrganization: Organization = Object.assign({}, organizationToUpdate);
+  
+      if (this.newOrganizationName) {
+        updatedOrganization.name = this.newOrganizationName;
+      }
+  
+      this.organizationService.updateOrganization(updatedOrganization).subscribe(
         () => {
           this.resetUpdateForm();
           this.loadOrganizations();
@@ -137,6 +148,7 @@ export class OrganizationComponent implements OnInit {
       );
     }
   }
+  
   
   addRoomToOrganization(): void {
     this.organizationService.addRoomToOrganization(this.selectedOrganizationToAddRoomId, this.selectedRoomId).subscribe(

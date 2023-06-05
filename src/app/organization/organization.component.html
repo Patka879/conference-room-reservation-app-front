@@ -28,7 +28,7 @@
         <tr class="uppercase-cell" mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr class="uppercase-cell" mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
-    <mat-paginator [pageSizeOptions]="[4, 8, 16, 20]" [length]="organizations.length" aria-label="Select page of users"></mat-paginator>
+    <mat-paginator [pageSizeOptions]="[4]" [length]="organizations.length" aria-label="Select page of users"></mat-paginator>
     <h4>*In order to delete organization, please make sure first that all reservations for given organization has been canceled.</h4>
 </div>
 <div class="forms-container">

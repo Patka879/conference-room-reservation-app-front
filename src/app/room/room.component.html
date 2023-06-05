@@ -42,6 +42,7 @@
             [ngClass]="{ 'available': room.availability, 'not-available': !room.availability }">
         </tr>
       </table>
+      <br>
       <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [length]="rooms.length" aria-label="Select page of rooms"></mat-paginator>
     </div>
     <div class="forms-container">

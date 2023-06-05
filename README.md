@@ -1,5 +1,5 @@
 
-# BOOKER - CONFERENCE ROOM RESERVATION SYSTEM
+# BOOKEY - CONFERENCE ROOM RESERVATION SYSTEM
 ##### Project back-end repository: https://github.com/Patka879/finalProject
 ##### Project front-end repository: https://github.com/Patka879/finalProjectFrontend
 

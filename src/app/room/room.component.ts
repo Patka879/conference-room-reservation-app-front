@@ -57,7 +57,7 @@ export class RoomComponent implements OnInit{
   loadRooms(): void {
     this.service.getRooms().subscribe((list: Room[]) => {
       this.rooms = list;
-      this.dataSource.data = this.rooms; // Update the data source
+      this.dataSource.data = this.rooms; 
       this.dataSource.paginator = this.paginator;
     });
   }
@@ -88,6 +88,11 @@ export class RoomComponent implements OnInit{
       this.showAddErrorMessage('Level must be between 0 and 10');
       return;
     }
+
+    if (this.newRoom.numberOfSittingPlaces < 0 || this.newRoom.numberOfStandingPlaces < 0) {
+      this.showAddErrorMessage('Number of sitting places and number of standing places cannot be negative');
+      return;
+    }
   
     this.newRoom.name = this.newRoom.name.toLowerCase();
   
@@ -102,8 +107,6 @@ export class RoomComponent implements OnInit{
       }
     );
   }
-  
-  
 
   updateRoom(): void {
     const roomIdToFind = Number(this.existingRoomId);
@@ -130,7 +133,7 @@ export class RoomComponent implements OnInit{
       const updatedRoom: Room = {
         ...roomToUpdate,
         name: this.newRoomName ? this.newRoomName : roomToUpdate.name,
-        identifier: roomToUpdate.identifier, // Keep the existing identifier
+        identifier: roomToUpdate.identifier, 
         level: this.newRoomLevel ? this.newRoomLevel : roomToUpdate.level,
         numberOfSittingPlaces: this.newRoomNumberOfSittingPlaces ? this.newRoomNumberOfSittingPlaces : roomToUpdate.numberOfSittingPlaces,
         numberOfStandingPlaces: this.newRoomNumberOfStandingPlaces ? this.newRoomNumberOfStandingPlaces : roomToUpdate.numberOfStandingPlaces,
@@ -148,9 +151,6 @@ export class RoomComponent implements OnInit{
       );
     }
   }
-  
-
-  
   
   showAddSuccessMessage(message: string): void {
     this.addSuccessMessage = message;

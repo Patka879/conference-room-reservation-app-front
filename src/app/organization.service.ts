@@ -16,10 +16,10 @@ const httpOptions = {
   })
 
   export class OrganizationService {
-    private getOrganizationsLink = "http://localhost:8080/organization/all"
-    private createOrganizationUrl = "http://localhost:8080/organization/new"
-    private deleteUrl = "http://localhost:8080/organization/delete/"
-    private updateUrl = "http://localhost:8080/organization/replace/"
+    private getOrganizationsLink = "/bookey-api/organization/all"
+    private createOrganizationUrl = "/bookey-api/organization/new"
+    private deleteUrl = "/bookey-api/organization/delete/"
+    private updateUrl = "/bookey-api/organization/replace/"
   
     constructor(private http:HttpClient) { }
 
@@ -46,12 +46,12 @@ const httpOptions = {
     }
 
     addRoomToOrganization(organizationId: number, roomId: number): Observable<any> {
-      const url = `http://localhost:8080/organization/${organizationId}/add-room/${roomId}`;
+      const url = `/bookey-api/organization/${organizationId}/add-room/${roomId}`;
       return this.http.patch(url, httpOptions);
     }
 
     removeRoomFromOrganization(organizationId: number, roomName: string): Observable<any> {
-      const url = `http://localhost:8080/organization/${organizationId}/remove-room/${roomName}`;
+      const url = `/bookey-api/organization/${organizationId}/remove-room/${roomName}`;
       return this.http.post(url, httpOptions);
     }
     

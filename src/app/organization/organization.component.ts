@@ -46,6 +46,7 @@ export class OrganizationComponent implements OnInit {
   dataSource = new MatTableDataSource<Organization>(this.organizations);
   removeRoomSuccessMessage: string = ''
   removeRoomErrorMessage: string = ''
+  todayDate:Date = new Date();
   @ViewChild(MatPaginator) paginator!: MatPaginator
   
 
@@ -149,7 +150,6 @@ export class OrganizationComponent implements OnInit {
     }
   }
   
-  
   addRoomToOrganization(): void {
     this.organizationService.addRoomToOrganization(this.selectedOrganizationToAddRoomId, this.selectedRoomId).subscribe(
       () => {
@@ -182,7 +182,6 @@ export class OrganizationComponent implements OnInit {
       }
     );
   }
-  
   
   deleteOrganization(id: number): void {
     this.organizationService.deleteOrganization(id).subscribe(() => {

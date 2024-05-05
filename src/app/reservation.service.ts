@@ -16,9 +16,9 @@ const httpOptions = {
   })
 
   export class ReservationService {
-    private getReservationsLink = "http://localhost:8080/reservation/all"
-    private deleteReservationUrl = "http://localhost:8080/reservation/delete/"
-    private updateReservationUrl = "http://localhost:8080/reservation/replace/"
+    private getReservationsLink = "/bookey-api/reservation/all"
+    private deleteReservationUrl = "/bookey-api/reservation/delete/"
+    private updateReservationUrl = "/bookey-api/reservation/replace/"
 
 
     constructor(private http:HttpClient) { }
@@ -28,7 +28,7 @@ const httpOptions = {
       }
 
     addReservation(organizationId: number, roomId: number, reservation: Reservation): Observable<any> {
-        const createReservationUrl = `http://localhost:8080/reservation/new/${organizationId}/${roomId}`;
+        const createReservationUrl = `/bookey-api/reservation/new/${organizationId}/${roomId}`;
         return this.http.post(createReservationUrl, reservation, httpOptions);
     }
 

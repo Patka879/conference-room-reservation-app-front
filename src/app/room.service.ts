@@ -18,10 +18,10 @@ const httpOptions = {
   })
 
   export class RoomService {
-    private getRoomsLink = "http://localhost:8080/room/all"
-    private createRoomUrl = "http://localhost:8080/room/new"
-    private deleteUrl = "http://localhost:8080/room/delete/"
-    private updateUrl = "http://localhost:8080/room/replace/"
+    private getRoomsLink = "/bookey-api/room/all"
+    private createRoomUrl = "/bookey-api/room/new"
+    private deleteUrl = "/bookey-api/room/delete/"
+    private updateUrl = "/bookey-api/room/replace/"
 
     constructor(private http:HttpClient) { }
 

@@ -83,12 +83,12 @@ export class OrganizationComponent implements OnInit {
     );
   
     if (existingOrganization) {
-      this.showErrorMessage('This organization already exists!');
+      this.showAddOrganizationErrorMessage('This organization already exists!');
       return;
     }
   
     if (this.newOrganization.name.trim() === '') {
-      this.showErrorMessage('Organization name cannot be empty');
+      this.showAddOrganizationErrorMessage('Organization name cannot be empty');
       return;
     }
   
@@ -97,12 +97,12 @@ export class OrganizationComponent implements OnInit {
         this.loadOrganizations();
         this.resetForm();
         this.errorMessage = '';
-        this.showSuccessMessage('Organization added successfully');
+        this.showAddOrganizationSuccessMessage('Organization added successfully');
       },
       error: (error) => {
         console.log(error.error);
         this.errorMessage = error.error;
-        this.showErrorMessage('Error adding organization');
+        this.showAddOrganizationErrorMessage('Error adding organization');
       }
     });
   }
@@ -143,8 +143,8 @@ export class OrganizationComponent implements OnInit {
           this.loadOrganizations();
           this.showUpdateSuccessMessage('Organization updated successfully');
         },
-        (error) => {
-          this.updateErrorMessage = error.message;
+        () => {
+          this.showUpdateErrorMessage("Please select all necessary input fields")
         }
       );
     }
@@ -154,12 +154,11 @@ export class OrganizationComponent implements OnInit {
     this.organizationService.addRoomToOrganization(this.selectedOrganizationToAddRoomId, this.selectedRoomId).subscribe(
       () => {
         this.resetRoomForm();
-        this.loadOrganizations();
-        this.addRoomSuccessMessage = 'Room added to organization successfully'
+        this.showAddRoomToOrganizationSuccessMessage("Room added to organization successfully")
         this.loadRooms();
       },
-      (error) => {
-        this.addRoomErrorMessage = error.message;
+      () => {
+        this.showAddRoomToOrganizationErrorMessage("Please select all input fields");
       }
     );
   }
@@ -174,11 +173,12 @@ export class OrganizationComponent implements OnInit {
       () => {
         this.resetRoomRemoveForm();
         this.loadOrganizations();
-        this.removeRoomSuccessMessage = 'Room removed from organization successfully';
+        this.showRemoveRoomFromOrganizationSuccessMessage("Room removed sucesfully from organization")
         this.loadRooms();
       },
-      (error) => {
+      () => {
         this.removeRoomErrorMessage = `Room ${this.selectedRoomToRemoveName} is not associated with this organization.`
+        this.showRemoveRoomFromOrganizationErrorMessage(this.removeRoomErrorMessage);
       }
     );
   }
@@ -214,14 +214,14 @@ export class OrganizationComponent implements OnInit {
     this.removeRoomErrorMessage = '';
   }
 
-  showSuccessMessage(message: string): void {
+  showAddOrganizationSuccessMessage(message: string): void {
     this.successMessage = message;
     setTimeout(() => {
       this.successMessage = '';
     }, 3000);
   }
 
-  showErrorMessage(message: string): void {
+  showAddOrganizationErrorMessage(message: string): void {
     this.errorMessage = message;
     setTimeout(() => {
       this.errorMessage = '';
@@ -239,6 +239,34 @@ export class OrganizationComponent implements OnInit {
     this.updateErrorMessage = message;
     setTimeout(() => {
       this.updateErrorMessage = '';
+    }, 3000);
+  }
+
+  showAddRoomToOrganizationErrorMessage(message: string): void {
+    this.addRoomErrorMessage = message;
+    setTimeout(() => {
+      this.addRoomErrorMessage = '';
+    }, 3000);
+  }
+
+  showAddRoomToOrganizationSuccessMessage(message: string): void {
+    this.addRoomSuccessMessage = message;
+    setTimeout(() => {
+      this.addRoomSuccessMessage = '';
+    }, 3000);
+  }
+
+  showRemoveRoomFromOrganizationSuccessMessage(message: string): void {
+    this.removeRoomSuccessMessage = message;
+    setTimeout(() => {
+      this.removeRoomSuccessMessage = '';
+    }, 3000);
+  }
+
+  showRemoveRoomFromOrganizationErrorMessage(message: string): void {
+    this.removeRoomErrorMessage = message;
+    setTimeout(() => {
+      this.removeRoomErrorMessage = '';
     }, 3000);
   }
 }

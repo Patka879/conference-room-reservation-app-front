@@ -168,7 +168,7 @@ export class ReservationComponent implements OnInit {
       () => {
         this.loadReservations();
       },
-      (error: any) => {
+      () => {
         this.showAddErrorMessage('Failed to delete reservation.');
       }
     );

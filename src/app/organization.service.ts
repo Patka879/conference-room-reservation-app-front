@@ -25,7 +25,6 @@ const httpOptions = {
 
     getOrganizations(): Observable<Organization[]> {
         const data = this.http.get<Organization[]>(this.getOrganizationsLink)
-        console.log(data)
         return data
     }
 

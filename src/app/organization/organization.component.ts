@@ -63,7 +63,6 @@ export class OrganizationComponent implements OnInit {
 
   loadOrganizations(): void {
     this.organizationService.getOrganizations().subscribe((list: Organization[]) => {
-      console.log("after initializing organisations", list)
       this.organizations = list;
       this.dataSource = new MatTableDataSource(this.organizations);
       this.dataSource.paginator = this.paginator;
@@ -99,9 +98,7 @@ export class OrganizationComponent implements OnInit {
         this.errorMessage = '';
         this.showAddOrganizationSuccessMessage('Organization added successfully');
       },
-      error: (error) => {
-        console.log(error.error);
-        this.errorMessage = error.error;
+      error: () => {
         this.showAddOrganizationErrorMessage('Error adding organization');
       }
     });
@@ -111,7 +108,6 @@ export class OrganizationComponent implements OnInit {
     const organizationToUpdate = this.organizations.find(
       (organization) => organization.id === this.selectedOrganizationToUpdateId
     );
-    console.log(organizationToUpdate);
   
     if (organizationToUpdate) {
       if (this.newOrganizationName.length < 2) {
@@ -124,13 +120,12 @@ export class OrganizationComponent implements OnInit {
           organization.name === this.newOrganizationName &&
           organization.id !== organizationToUpdate.id
       );
-      console.log(existingOrganization);
+
       if (existingOrganization) {
-        this.showUpdateErrorMessage('An organization with the same name already exists');
+        this.showAddOrganizationErrorMessage('This organization already exists!');
         return;
       }
   
-      // Update the organization properties
       let updatedOrganization: Organization = Object.assign({}, organizationToUpdate);
   
       if (this.newOrganizationName) {

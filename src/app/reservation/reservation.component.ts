@@ -116,8 +116,6 @@ export class ReservationComponent implements OnInit {
     newReservationDate.setHours(6, 0);
     this.newReservation.date = newReservationDate
 
-    console.log('new reservarion start time', this.newReservation.date)
-
     const isIdentifierUsed = this.reservations.some(
       (reservation) =>
         reservation.identifier.toLowerCase() ===

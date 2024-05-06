@@ -4,6 +4,10 @@ h1 {
     font-weight: bold;
 }
 
+.app-title {
+    margin-right: 50px;
+}
+
 .data-container {
     display: flex;
     flex-direction: column;

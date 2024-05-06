@@ -1,5 +1,4 @@
 import { Observable } from 'rxjs';
-import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Room } from './room'

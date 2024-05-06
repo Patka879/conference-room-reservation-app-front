@@ -24,7 +24,7 @@ const httpOptions = {
     constructor(private http:HttpClient) { }
 
     getOrganizations(): Observable<Organization[]> {
-        const data = this.http.get<Organization[]>(this.getOrganizationsLink, httpOptions)
+        const data = this.http.get<Organization[]>(this.getOrganizationsLink)
         console.log(data)
         return data
     }
@@ -32,17 +32,16 @@ const httpOptions = {
     addOrganization(organization : Organization): Observable<any> {
     return this.http.post (
         this.createOrganizationUrl,
-        organization,
-        httpOptions
+        organization
         )
     }
 
     deleteOrganization(arg0: number): Observable<any> {
-        return this.http.delete(this.deleteUrl + arg0, httpOptions)
+        return this.http.delete(this.deleteUrl + arg0)
     }
 
     updateOrganization(organization: Organization): Observable<any> {
-      return this.http.patch(this.updateUrl + organization.id, organization, httpOptions);
+      return this.http.patch(this.updateUrl + organization.id, organization);
     }
 
     addRoomToOrganization(organizationId: number, roomId: number): Observable<any> {

@@ -72,7 +72,7 @@ export class OrganizationComponent implements OnInit {
   loadRooms(): void {
     this.roomService.getRooms().subscribe((rooms: Room[]) => {
       this.rooms = rooms;
-      this.dataSource.data = this.organizations; // Update the data source
+      this.dataSource.data = this.organizations;
     });
   }
 
@@ -149,6 +149,7 @@ export class OrganizationComponent implements OnInit {
     this.organizationService.addRoomToOrganization(this.selectedOrganizationToAddRoomId, this.selectedRoomId).subscribe(
       () => {
         this.resetRoomForm();
+        this.loadOrganizations();
         this.showAddRoomToOrganizationSuccessMessage("Room added to organization successfully")
         this.loadRooms();
       },

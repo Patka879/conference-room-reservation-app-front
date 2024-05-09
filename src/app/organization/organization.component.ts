@@ -64,8 +64,8 @@ export class OrganizationComponent implements OnInit {
   loadOrganizations(): void {
     this.organizationService.getOrganizations().subscribe((list: Organization[]) => {
       this.organizations = list;
-      this.dataSource = new MatTableDataSource(this.organizations);
       this.dataSource.paginator = this.paginator;
+      this.dataSource = new MatTableDataSource(this.organizations);
     });
   }
 

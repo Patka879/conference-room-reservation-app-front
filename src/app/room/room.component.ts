@@ -133,7 +133,7 @@ export class RoomComponent implements OnInit{
       const updatedRoom: Room = {
         ...roomToUpdate,
         name: this.newRoomName ? this.newRoomName : roomToUpdate.name,
-        identifier: roomToUpdate.identifier, 
+        identifier: this.newRoomIdentifier ? this.newRoomIdentifier :  roomToUpdate.identifier, 
         level: this.newRoomLevel ? this.newRoomLevel : roomToUpdate.level,
         numberOfSittingPlaces: this.newRoomNumberOfSittingPlaces ? this.newRoomNumberOfSittingPlaces : roomToUpdate.numberOfSittingPlaces,
         numberOfStandingPlaces: this.newRoomNumberOfStandingPlaces ? this.newRoomNumberOfStandingPlaces : roomToUpdate.numberOfStandingPlaces,

@@ -60,7 +60,7 @@ npm install
 ```
 * Start the project: 
 ```
-npm start
+npg serve
 ```
 
 Steps to build the project:
